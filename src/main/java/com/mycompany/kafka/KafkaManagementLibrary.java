@@ -22,6 +22,9 @@ public class KafkaManagementLibrary {
     private final ConsumerManager consumerManager;
     private final SessionManager sessionManager;
     private final SimpleSchemaManager schemaManager;
+    private final MessageViewer messageViewer;
+    private final SessionViewer sessionViewer;
+    private final TopicTypeManager topicTypeManager;
     
     /**
      * Constructor to initialize KafkaManagementLibrary with Kafka and Schema Registry configurations.
@@ -38,6 +41,9 @@ public class KafkaManagementLibrary {
         this.consumerManager = new ConsumerManager(connectionFactory);
         this.sessionManager = new SessionManager(connectionFactory);
         this.schemaManager = new SimpleSchemaManager(connectionFactory);
+        this.messageViewer = new MessageViewer(connectionFactory);
+        this.sessionViewer = new SessionViewer(connectionFactory);
+        this.topicTypeManager = new TopicTypeManager(connectionFactory);
         
         log.info("KafkaManagementLibrary initialized successfully");
     }
@@ -409,6 +415,97 @@ public class KafkaManagementLibrary {
     }
     
     /**
+     * Gets the MessageViewer instance.
+     * 
+     * @return MessageViewer instance
+     */
+    public MessageViewer getMessageViewer() {
+        return messageViewer;
+    }
+    
+    /**
+     * Gets the SessionViewer instance.
+     * 
+     * @return SessionViewer instance
+     */
+    public SessionViewer getSessionViewer() {
+        return sessionViewer;
+    }
+    
+    /**
+     * Gets the TopicTypeManager instance.
+     * 
+     * @return TopicTypeManager instance
+     */
+    public TopicTypeManager getTopicTypeManager() {
+        return topicTypeManager;
+    }
+    
+    // Additional useful methods
+    
+    /**
+     * Peeks at messages from a topic without consuming them.
+     * 
+     * @param topicName The name of the topic
+     * @param maxRecords Maximum number of records to peek
+     * @return List of ConsumerRecord objects
+     */
+    public java.util.List<org.apache.kafka.clients.consumer.ConsumerRecord<String, String>> peekMessages(String topicName, int maxRecords) {
+        return messageViewer.peekMessages(topicName, maxRecords);
+    }
+    
+    /**
+     * Gets active consumer groups.
+     * 
+     * @return List of ConsumerGroupInfo objects
+     */
+    public java.util.List<com.mycompany.kafka.dto.ConsumerGroupInfo> getActiveConsumerGroups() {
+        return sessionViewer.getActiveConsumerGroups();
+    }
+    
+    /**
+     * Gets session summary information.
+     * 
+     * @return Map containing session summary
+     */
+    public java.util.Map<String, Object> getSessionSummary() {
+        return sessionViewer.getSessionSummary();
+    }
+    
+    /**
+     * Creates a compacted topic.
+     * 
+     * @param topicName The name of the topic
+     * @param numPartitions The number of partitions
+     * @param replicationFactor The replication factor
+     */
+    public void createCompactedTopic(String topicName, int numPartitions, short replicationFactor) {
+        topicTypeManager.createCompactedTopic(topicName, numPartitions, replicationFactor);
+    }
+    
+    /**
+     * Creates a high-throughput topic.
+     * 
+     * @param topicName The name of the topic
+     * @param numPartitions The number of partitions
+     * @param replicationFactor The replication factor
+     */
+    public void createHighThroughputTopic(String topicName, int numPartitions, short replicationFactor) {
+        topicTypeManager.createHighThroughputTopic(topicName, numPartitions, replicationFactor);
+    }
+    
+    /**
+     * Creates a low-latency topic.
+     * 
+     * @param topicName The name of the topic
+     * @param numPartitions The number of partitions
+     * @param replicationFactor The replication factor
+     */
+    public void createLowLatencyTopic(String topicName, int numPartitions, short replicationFactor) {
+        topicTypeManager.createLowLatencyTopic(topicName, numPartitions, replicationFactor);
+    }
+    
+    /**
      * Closes all resources and connections.
      * This method should be called when the KafkaManagementLibrary is no longer needed.
      */
@@ -424,6 +521,15 @@ public class KafkaManagementLibrary {
             }
             if (sessionManager != null) {
                 sessionManager.closeAll();
+            }
+            if (messageViewer != null) {
+                // MessageViewer doesn't have a close method, but we can add it if needed
+            }
+            if (sessionViewer != null) {
+                sessionViewer.close();
+            }
+            if (topicTypeManager != null) {
+                topicTypeManager.close();
             }
             log.info("KafkaManagementLibrary closed successfully");
         } catch (Exception e) {

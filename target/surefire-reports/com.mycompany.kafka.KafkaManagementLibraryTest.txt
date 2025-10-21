@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.mycompany.kafka.KafkaManagementLibraryTest
 -------------------------------------------------------------------------------
-Tests run: 19, Failures: 0, Errors: 11, Skipped: 0, Time elapsed: 361.472 s <<< FAILURE! - in com.mycompany.kafka.KafkaManagementLibraryTest
-com.mycompany.kafka.KafkaManagementLibraryTest.testDeleteTopic  Time elapsed: 61.115 s  <<< ERROR!
+Tests run: 19, Failures: 0, Errors: 11, Skipped: 0, Time elapsed: 361.038 s <<< FAILURE! - in com.mycompany.kafka.KafkaManagementLibraryTest
+com.mycompany.kafka.KafkaManagementLibraryTest.testDeleteTopic  Time elapsed: 60.685 s  <<< ERROR!
 java.lang.RuntimeException: Failed to delete topic: test-topic
 	at com.mycompany.kafka.manager.TopicOperations.deleteTopic(TopicOperations.java:87)
 	at com.mycompany.kafka.manager.TopicManager.deleteTopic(TopicManager.java:61)
@@ -87,7 +87,7 @@ Caused by: java.util.concurrent.ExecutionException: org.apache.kafka.common.erro
 	... 74 more
 Caused by: org.apache.kafka.common.errors.TimeoutException: Timed out waiting for a node assignment. Call: deleteTopics
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testListTopics  Time elapsed: 60.012 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testListTopics  Time elapsed: 60.017 s  <<< ERROR!
 java.lang.RuntimeException: Failed to list topics
 	at com.mycompany.kafka.manager.TopicQueries.listTopics(TopicQueries.java:45)
 	at com.mycompany.kafka.manager.TopicManager.listTopics(TopicManager.java:71)
@@ -172,7 +172,7 @@ Caused by: java.util.concurrent.ExecutionException: org.apache.kafka.common.erro
 	... 74 more
 Caused by: org.apache.kafka.common.errors.TimeoutException: Timed out waiting for a node assignment. Call: listTopics
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testListSubjects  Time elapsed: 0.022 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testListSubjects  Time elapsed: 0.021 s  <<< ERROR!
 java.lang.RuntimeException: Failed to list subjects
 	at com.mycompany.kafka.manager.SimpleSchemaManager.listSubjects(SimpleSchemaManager.java:86)
 	at com.mycompany.kafka.KafkaManagementLibrary.listSubjects(KafkaManagementLibrary.java:292)
@@ -275,7 +275,7 @@ Caused by: java.net.ConnectException: Connection refused
 	at com.mycompany.kafka.manager.SimpleSchemaManager.listSubjects(SimpleSchemaManager.java:81)
 	... 73 more
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testConsumeMessages  Time elapsed: 0.009 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testConsumeMessages  Time elapsed: 0.007 s  <<< ERROR!
 java.lang.RuntimeException: Failed to consume messages from topic: test-topic
 	at com.mycompany.kafka.manager.MessageManager.consumeMessages(MessageManager.java:148)
 	at com.mycompany.kafka.KafkaManagementLibrary.consumeMessages(KafkaManagementLibrary.java:185)
@@ -360,7 +360,7 @@ Caused by: java.lang.NullPointerException
 	at com.mycompany.kafka.manager.MessageManager.consumeMessages(MessageManager.java:125)
 	... 73 more
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testCreateTransactionalProducer  Time elapsed: 0.009 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testCreateTransactionalProducer  Time elapsed: 0.008 s  <<< ERROR!
 java.lang.RuntimeException: Failed to create transactional producer: test-transaction
 	at com.mycompany.kafka.manager.SessionManager.createTransactionalProducer(SessionManager.java:62)
 	at com.mycompany.kafka.KafkaManagementLibrary.createTransactionalProducer(KafkaManagementLibrary.java:314)
@@ -448,7 +448,7 @@ Caused by: org.apache.kafka.common.config.ConfigException: Must set retries to n
 	at com.mycompany.kafka.manager.SessionManager.createTransactionalProducer(SessionManager.java:54)
 	... 73 more
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testCommitTransaction  Time elapsed: 0.01 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testCommitTransaction  Time elapsed: 0.007 s  <<< ERROR!
 java.lang.RuntimeException: Failed to commit transaction: test-transaction
 	at com.mycompany.kafka.manager.SessionManager.commitTransaction(SessionManager.java:138)
 	at com.mycompany.kafka.KafkaManagementLibrary.commitTransaction(KafkaManagementLibrary.java:343)
@@ -608,7 +608,7 @@ Caused by: java.lang.IllegalStateException: No transactional producer found for 
 	at com.mycompany.kafka.manager.SessionManager.abortTransaction(SessionManager.java:154)
 	... 73 more
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testCreateTopic_WithConfigs  Time elapsed: 60.016 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testCreateTopic_WithConfigs  Time elapsed: 60.014 s  <<< ERROR!
 java.lang.RuntimeException: Failed to create topic: test-topic
 	at com.mycompany.kafka.manager.TopicOperations.createTopic(TopicOperations.java:53)
 	at com.mycompany.kafka.manager.TopicOperations.createTopic(TopicOperations.java:70)
@@ -787,7 +787,7 @@ Caused by: org.apache.kafka.common.KafkaException: Failed to find brokers to sen
 	at java.base/java.lang.Thread.run(Thread.java:830)
 Caused by: org.apache.kafka.common.errors.TimeoutException: Timed out waiting for a node assignment. Call: findAllBrokers
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testSubjectExists  Time elapsed: 0.007 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testSubjectExists  Time elapsed: 0.016 s  <<< ERROR!
 java.lang.RuntimeException: Failed to check if subject exists: test-subject
 	at com.mycompany.kafka.manager.SimpleSchemaManager.subjectExists(SimpleSchemaManager.java:109)
 	at com.mycompany.kafka.KafkaManagementLibrary.subjectExists(KafkaManagementLibrary.java:302)
@@ -890,7 +890,7 @@ Caused by: java.net.ConnectException: Connection refused
 	at com.mycompany.kafka.manager.SimpleSchemaManager.subjectExists(SimpleSchemaManager.java:103)
 	... 73 more
 
-com.mycompany.kafka.KafkaManagementLibraryTest.testBeginTransaction  Time elapsed: 0.006 s  <<< ERROR!
+com.mycompany.kafka.KafkaManagementLibraryTest.testBeginTransaction  Time elapsed: 0.02 s  <<< ERROR!
 java.lang.RuntimeException: Failed to begin transaction: test-transaction
 	at com.mycompany.kafka.manager.SessionManager.beginTransaction(SessionManager.java:115)
 	at com.mycompany.kafka.KafkaManagementLibrary.beginTransaction(KafkaManagementLibrary.java:334)

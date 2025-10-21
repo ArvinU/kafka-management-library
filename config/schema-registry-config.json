@@ -1,0 +1,8 @@
+{
+  "schema.registry.url": "https://localhost:8081",
+  "ssl.truststore.location": "/path/to/truststore.jks",
+  "ssl.truststore.password": "truststore-password",
+  "ssl.keystore.location": "/path/to/keystore.jks",
+  "ssl.keystore.password": "keystore-password",
+  "ssl.key.password": "key-password"
+}

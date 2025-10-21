@@ -13,10 +13,21 @@ A comprehensive Java library for managing Confluent Kafka brokers and Schema Reg
 - **JKS/SSL Support**: Secure connections with Java KeyStore (JKS) configuration
 - **Multiple Serialization Formats**: String, Avro, JSON Schema support
 
+### 🆕 New Features
+- **Message Viewing**: Peek at messages without consuming them (read-only operations)
+- **Topic Types**: Create different types of topics (compacted, high-throughput, low-latency, etc.)
+- **Session Monitoring**: View active sessions and current consumers
+- **CLI Interface**: Command-line interface for interactive and non-interactive usage
+- **Advanced Message Filtering**: Filter messages by key/value patterns
+- **Partition Information**: Get detailed partition and offset information
+- **Consumer Health Monitoring**: Monitor consumer group health and performance
+
 ### 🔧 Supported Operations
 
 #### Topic Operations
 - Create topics with custom configurations
+- **Create different types of topics (compacted, high-throughput, low-latency, etc.)**
+- **Create topics from templates**
 - Delete topics
 - List all topics
 - Describe topic details
@@ -27,6 +38,10 @@ A comprehensive Java library for managing Confluent Kafka brokers and Schema Reg
 #### Message Operations
 - Send messages (String, Avro, JSON Schema)
 - Consume messages with various deserializers
+- **Peek at messages without consuming them**
+- **Filter messages by key/value patterns**
+- **View messages from specific partitions**
+- **Get partition and offset information**
 - Partition-specific consumption
 - Offset management
 - Message metadata access
@@ -38,7 +53,9 @@ A comprehensive Java library for managing Confluent Kafka brokers and Schema Reg
 - Get consumer group offsets
 - Reset offsets (earliest/latest)
 - Calculate consumer group lag
-- Monitor consumer group health
+- **Monitor consumer group health**
+- **View active consumers and sessions**
+- **Get session summary information**
 
 #### Schema Registry Operations
 - Register schemas (Avro, JSON, Protobuf)
@@ -79,6 +96,41 @@ The library includes the following dependencies:
 - SLF4J for logging
 
 ## Quick Start
+
+### CLI Usage
+
+The library now includes a command-line interface for easy interaction:
+
+```bash
+# Interactive mode
+java -jar kafka-management-library.jar localhost:9092 http://localhost:8081
+
+# Non-interactive mode
+java -jar kafka-management-library.jar localhost:9092 http://localhost:8081 "topics list"
+```
+
+#### Available CLI Commands
+
+```bash
+# Topic operations
+topics list                                    # List all topics
+topics info <topic-name>                       # Get topic information
+create-topic <name> <partitions> <replication> [type]  # Create a topic
+
+# Message operations
+messages peek <topic> [count]                  # Peek at messages
+send-message <topic> <key> <value>             # Send a message
+peek-messages <topic> [count]                  # Peek at messages (alias)
+
+# Consumer operations
+consumers list                                 # List all consumer groups
+consumers info <group-id>                      # Get consumer group information
+list-consumers                                 # List active consumers
+consumer-health <group-id>                     # Get consumer group health
+
+# Session operations
+sessions summary                               # Get session summary
+```
 
 ### Basic Usage
 
@@ -292,6 +344,53 @@ public class SessionManager {
 }
 ```
 
+#### MessageViewer
+```java
+public class MessageViewer {
+    public List<ConsumerRecord<String, String>> peekMessages(String topicName, int maxRecords)
+    public List<ConsumerRecord<String, String>> peekMessagesFromPartition(String topicName, int partition, long offset, int maxRecords)
+    public List<ConsumerRecord<String, String>> peekMessagesFromEarliest(String topicName, int maxRecords)
+    public List<ConsumerRecord<String, String>> peekMessagesFromLatest(String topicName, int maxRecords)
+    public long getLatestOffset(String topicName, int partition)
+    public long getEarliestOffset(String topicName, int partition)
+    public long getMessageCount(String topicName, int partition)
+    public Map<Integer, Long> getPartitionInfo(String topicName)
+    public List<ConsumerRecord<String, String>> peekMessagesByKey(String topicName, String keyPattern, int maxRecords)
+    public List<ConsumerRecord<String, String>> peekMessagesByValue(String topicName, String valuePattern, int maxRecords)
+}
+```
+
+#### SessionViewer
+```java
+public class SessionViewer {
+    public List<ConsumerGroupInfo> getActiveConsumerGroups()
+    public ConsumerGroupInfo getConsumerGroupDetails(String groupId)
+    public List<ConsumerGroupInfo.MemberInfo> getActiveConsumers()
+    public Map<TopicPartition, Long> getConsumerGroupLag(String groupId)
+    public Map<TopicPartition, OffsetAndMetadata> getConsumerGroupOffsets(String groupId)
+    public Map<String, Object> getSessionSummary()
+    public Map<String, Object> getConsumerGroupHealth(String groupId)
+    public List<Map<String, Object>> getAllConsumerGroupHealth()
+}
+```
+
+#### TopicTypeManager
+```java
+public class TopicTypeManager {
+    public void createCompactedTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createTimeRetentionTopic(String topicName, int numPartitions, short replicationFactor, long retentionMs)
+    public void createSizeRetentionTopic(String topicName, int numPartitions, short replicationFactor, long retentionBytes)
+    public void createHighThroughputTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createLowLatencyTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createDurableTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createEventSourcingTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createCDCTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createDeadLetterTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createMetricsTopic(String topicName, int numPartitions, short replicationFactor)
+    public void createTopicFromTemplate(String topicName, int numPartitions, short replicationFactor, String template, Map<String, Object> templateParams)
+}
+```
+
 ## Configuration Classes
 
 ### KafkaConfig
@@ -437,6 +536,20 @@ public class MyApplication {
 }
 ```
 
+### Enhanced Example with New Features
+
+See `EnhancedKafkaLibraryExample.java` for examples of the new features:
+
+```java
+import com.mycompany.kafka.example.EnhancedKafkaLibraryExample;
+
+public class MyEnhancedApplication {
+    public static void main(String[] args) {
+        EnhancedKafkaLibraryExample.main(args);
+    }
+}
+```
+
 ### Topic Management Example
 
 ```java
@@ -446,6 +559,17 @@ configs.put("retention.ms", "604800000"); // 7 days
 configs.put("compression.type", "snappy");
 
 library.createTopic("my-topic", 3, (short) 1, configs);
+
+// Create different types of topics
+library.createCompactedTopic("compacted-topic", 3, (short) 1);
+library.createHighThroughputTopic("high-throughput-topic", 6, (short) 1);
+library.createLowLatencyTopic("low-latency-topic", 3, (short) 1);
+
+// Create topic from template
+Map<String, Object> params = new HashMap<>();
+params.put("retentionMs", 86400000L); // 1 day
+library.getTopicTypeManager().createTopicFromTemplate(
+    "template-topic", 3, (short) 1, "TIME_RETENTION", params);
 
 // List topics
 List<String> topics = library.listTopics();
@@ -462,6 +586,22 @@ System.out.println("Topic info: " + topicInfo);
 // Send messages
 library.sendMessage("my-topic", "key1", "Hello Kafka!");
 library.sendMessage("my-topic", "key2", "This is a test message");
+
+// Peek at messages without consuming them
+List<ConsumerRecord<String, String>> peekedMessages = 
+    library.peekMessages("my-topic", 10);
+
+for (ConsumerRecord<String, String> record : peekedMessages) {
+    System.out.println("Peeked - Key: " + record.key() + ", Value: " + record.value());
+}
+
+// Filter messages by key pattern
+List<ConsumerRecord<String, String>> userMessages = 
+    library.getMessageViewer().peekMessagesByKey("my-topic", "user.*", 10);
+
+// Get partition information
+Map<Integer, Long> partitionInfo = library.getMessageViewer().getPartitionInfo("my-topic");
+System.out.println("Partition info: " + partitionInfo);
 
 // Consume messages
 List<ConsumerRecord<String, String>> records = 
@@ -516,6 +656,47 @@ library.commitTransaction(transactionId);
 library.getSessionManager().closeTransactionalProducer(transactionId);
 ```
 
+### Session Monitoring Example
+
+```java
+// Get active consumer groups
+List<ConsumerGroupInfo> activeGroups = library.getActiveConsumerGroups();
+System.out.println("Active consumer groups: " + activeGroups.size());
+
+// Get session summary
+Map<String, Object> sessionSummary = library.getSessionSummary();
+System.out.println("Session summary: " + sessionSummary);
+
+// Get consumer group health
+for (ConsumerGroupInfo group : activeGroups) {
+    Map<String, Object> health = library.getSessionViewer().getConsumerGroupHealth(group.getGroupId());
+    System.out.println("Group " + group.getGroupId() + " health: " + health);
+}
+
+// Get active consumers
+List<ConsumerGroupInfo.MemberInfo> activeConsumers = library.getSessionViewer().getActiveConsumers();
+System.out.println("Active consumers: " + activeConsumers.size());
+```
+
+### JSON Configuration Example
+
+```java
+// Load configurations from JSON files
+KafkaConfig kafkaConfig = JsonConfigLoader.loadKafkaConfig("kafka-config.json");
+SchemaRegistryConfig schemaRegistryConfig = JsonConfigLoader.loadSchemaRegistryConfig("schema-registry-config.json");
+
+// Initialize library with JSON configurations
+KafkaManagementLibrary library = new KafkaManagementLibrary(kafkaConfig, schemaRegistryConfig);
+
+// Use the library normally
+List<String> topics = library.listTopics();
+System.out.println("Topics: " + topics);
+
+// Create sample configuration files
+JsonConfigLoader.createSampleKafkaConfig("sample-kafka-config.json");
+JsonConfigLoader.createSampleSchemaRegistryConfig("sample-schema-registry-config.json");
+```
+
 ## Error Handling
 
 The library provides comprehensive error handling with detailed logging:
@@ -542,6 +723,155 @@ The library uses SLF4J for logging. Configure your logging framework (Logback, L
 </configuration>
 ```
 
+## CLI Interface
+
+The library includes a comprehensive command-line interface for managing Kafka operations:
+
+### Usage
+
+#### Using the JAR file directly:
+```bash
+# Interactive mode
+java -jar kafka-management-library.jar <bootstrap-servers> <schema-registry-url>
+
+# Non-interactive mode
+java -jar kafka-management-library.jar <bootstrap-servers> <schema-registry-url> "<command>"
+```
+
+#### Using the provided scripts:
+
+**Linux/Mac:**
+```bash
+# Interactive mode
+./scripts/run-cli.sh
+
+# Non-interactive mode
+./scripts/run-cli.sh localhost:9092 http://localhost:8081 "topics list"
+
+# With custom servers
+./scripts/run-cli.sh kafka-cluster:9092 https://schema-registry:8081
+
+# Using JSON configuration files
+./scripts/run-cli.sh config/kafka-config.json config/schema-registry-config.json
+
+# Generate sample configuration files
+./scripts/run-cli.sh --generate-configs
+```
+
+**Windows:**
+```cmd
+REM Interactive mode
+scripts\run-cli.bat
+
+REM Non-interactive mode
+scripts\run-cli.bat localhost:9092 http://localhost:8081 "topics list"
+
+REM With custom servers
+scripts\run-cli.bat kafka-cluster:9092 https://schema-registry:8081
+
+REM Using JSON configuration files
+scripts\run-cli.bat config\kafka-config.json config\schema-registry-config.json
+
+REM Generate sample configuration files
+scripts\run-cli.bat --generate-configs
+```
+
+### Available Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `topics list` | List all topics | `topics list` |
+| `topics info <topic>` | Get topic information | `topics info my-topic` |
+| `create-topic <name> <partitions> <replication> [type]` | Create a topic | `create-topic my-topic 3 1 compacted` |
+| `messages peek <topic> [count]` | Peek at messages | `messages peek my-topic 10` |
+| `send-message <topic> <key> <value>` | Send a message | `send-message my-topic key1 value1` |
+| `consumers list` | List consumer groups | `consumers list` |
+| `consumers info <group-id>` | Get consumer group info | `consumers info my-group` |
+| `sessions summary` | Get session summary | `sessions summary` |
+| `list-consumers` | List active consumers | `list-consumers` |
+| `consumer-health <group-id>` | Get consumer group health | `consumer-health my-group` |
+
+### JSON Configuration Support
+
+The CLI supports loading configurations from JSON files, making it easy to manage different environments and complex configurations:
+
+#### Generate Sample Configuration Files
+
+```bash
+# Generate sample configuration files
+java -jar kafka-management-library.jar --generate-configs
+# or
+./scripts/run-cli.sh --generate-configs
+```
+
+This creates:
+- `kafka-config.json` - Kafka client configuration
+- `schema-registry-config.json` - Schema Registry configuration
+
+#### Sample Kafka Configuration (JKS SSL)
+
+```json
+{
+  "bootstrap.servers": "localhost:9092",
+  "security.protocol": "SSL",
+  "ssl.truststore.location": "/path/to/truststore.jks",
+  "ssl.truststore.password": "truststore-password",
+  "ssl.keystore.location": "/path/to/keystore.jks",
+  "ssl.keystore.password": "keystore-password",
+  "ssl.key.password": "key-password"
+}
+```
+
+#### Sample Schema Registry Configuration (JKS SSL)
+
+```json
+{
+  "schema.registry.url": "https://localhost:8081",
+  "ssl.truststore.location": "/path/to/truststore.jks",
+  "ssl.truststore.password": "truststore-password",
+  "ssl.keystore.location": "/path/to/keystore.jks",
+  "ssl.keystore.password": "keystore-password",
+  "ssl.key.password": "key-password"
+}
+```
+
+#### Minimal Configuration (No SSL)
+
+```json
+{
+  "bootstrap.servers": "localhost:9092"
+}
+```
+
+```json
+{
+  "schema.registry.url": "http://localhost:8081"
+}
+```
+
+#### Using JSON Configuration Files
+
+```bash
+# Using JSON configuration files
+java -jar kafka-management-library.jar kafka-config.json schema-registry-config.json
+
+# With commands
+java -jar kafka-management-library.jar kafka-config.json schema-registry-config.json "topics list"
+```
+
+### Topic Types
+
+The CLI supports creating different types of topics:
+
+- `compacted` - Log compacted topic
+- `high-throughput` - Optimized for high message volume
+- `low-latency` - Optimized for real-time processing
+- `durable` - High durability guarantees
+- `event-sourcing` - Long retention for event sourcing
+- `cdc` - Change data capture topic
+- `dead-letter` - Dead letter queue topic
+- `metrics` - Metrics and monitoring data
+
 ## Best Practices
 
 1. **Resource Management**: Always call `close()` on the library when done
@@ -550,6 +880,10 @@ The library uses SLF4J for logging. Configure your logging framework (Logback, L
 4. **Logging**: Configure logging levels appropriately
 5. **Transactions**: Always commit or abort transactions
 6. **SSL**: Use SSL configurations in production environments
+7. **Message Viewing**: Use `peekMessages()` for read-only operations
+8. **Topic Types**: Choose appropriate topic types for your use case
+9. **Session Monitoring**: Monitor consumer group health regularly
+10. **CLI Usage**: Use the CLI for quick operations and debugging
 
 ## Requirements
 

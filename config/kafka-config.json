@@ -1,0 +1,9 @@
+{
+  "bootstrap.servers": "localhost:9092",
+  "security.protocol": "SSL",
+  "ssl.truststore.location": "/path/to/truststore.jks",
+  "ssl.truststore.password": "truststore-password",
+  "ssl.keystore.location": "/path/to/keystore.jks",
+  "ssl.keystore.password": "keystore-password",
+  "ssl.key.password": "key-password"
+}
