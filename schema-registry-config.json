@@ -1,0 +1,11 @@
+{
+  "#ssl.truststore.password" : "truststore-password",
+  "schema.registry.url" : "http://localhost:8081",
+  "#retries" : 3,
+  "#ssl.keystore.location" : "/path/to/keystore.jks",
+  "#ssl.truststore.location" : "/path/to/truststore.jks",
+  "#request.timeout.ms" : 30000,
+  "#cache.capacity" : 1000,
+  "#ssl.keystore.password" : "keystore-password",
+  "#ssl.key.password" : "key-password"
+}

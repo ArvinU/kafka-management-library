@@ -21,6 +21,7 @@ public class KafkaManagementLibrary {
     private final ConnectionFactory connectionFactory;
     private final TopicManager topicManager;
     private final MessageManager messageManager;
+    private final EnhancedMessageManager enhancedMessageManager;
     private final ConsumerManager consumerManager;
     private final SessionManager sessionManager;
     private final SimpleSchemaManager schemaManager;
@@ -47,6 +48,7 @@ public class KafkaManagementLibrary {
             
             this.topicManager = new TopicManager(connectionFactory);
             this.messageManager = new MessageManager(connectionFactory);
+            this.enhancedMessageManager = new EnhancedMessageManager(connectionFactory);
             this.consumerManager = new ConsumerManager(connectionFactory);
             this.sessionManager = new SessionManager(connectionFactory);
             this.schemaManager = new SimpleSchemaManager(connectionFactory);
@@ -75,6 +77,43 @@ public class KafkaManagementLibrary {
      */
     public KafkaManagementLibrary(String bootstrapServers, String schemaRegistryUrl) throws KafkaManagementException {
         this(new KafkaConfig(bootstrapServers), new SchemaRegistryConfig(schemaRegistryUrl));
+    }
+    
+    /**
+     * Test constructor that bypasses connection validation.
+     * This should only be used for testing purposes.
+     * 
+     * @param kafkaConfig Kafka configuration
+     * @param schemaRegistryConfig Schema Registry configuration
+     * @param skipConnectionValidation If true, skips connection validation
+     */
+    public KafkaManagementLibrary(KafkaConfig kafkaConfig, SchemaRegistryConfig schemaRegistryConfig, boolean skipConnectionValidation) {
+        log.info("Initializing KafkaManagementLibrary (test mode)");
+        
+        try {
+            // Create connection factory with validation bypass for testing
+            this.connectionFactory = new ConnectionFactory(kafkaConfig, schemaRegistryConfig, skipConnectionValidation);
+            
+            this.topicManager = new TopicManager(connectionFactory);
+            this.messageManager = new MessageManager(connectionFactory);
+            this.enhancedMessageManager = new EnhancedMessageManager(connectionFactory);
+            this.consumerManager = new ConsumerManager(connectionFactory);
+            this.sessionManager = new SessionManager(connectionFactory);
+            this.schemaManager = new SimpleSchemaManager(connectionFactory);
+            this.messageViewer = new MessageViewer(connectionFactory);
+            this.sessionViewer = new SessionViewer(connectionFactory);
+            this.topicTypeManager = new TopicTypeManager(connectionFactory);
+            
+            log.info("KafkaManagementLibrary initialized successfully (test mode)");
+        } catch (Exception e) {
+            if (e instanceof KafkaManagementException) {
+                throw e;
+            }
+            throw new KafkaManagementException(
+                ErrorConstants.KAFKA_CONNECTION_FAILED,
+                "Failed to initialize KafkaManagementLibrary",
+                e);
+        }
     }
     
     // Topic Management Methods
@@ -439,6 +478,15 @@ public class KafkaManagementLibrary {
      */
     public MessageManager getMessageManager() {
         return messageManager;
+    }
+    
+    /**
+     * Gets the EnhancedMessageManager instance with schema ID support.
+     * 
+     * @return EnhancedMessageManager instance
+     */
+    public EnhancedMessageManager getEnhancedMessageManager() {
+        return enhancedMessageManager;
     }
     
     /**

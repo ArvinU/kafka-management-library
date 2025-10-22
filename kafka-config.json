@@ -1,0 +1,14 @@
+{
+  "#ssl.truststore.password" : "truststore-password",
+  "#client.id" : "kafka-management-library",
+  "#auto.offset.reset" : "earliest",
+  "#retries" : 3,
+  "#ssl.keystore.location" : "/path/to/keystore.jks",
+  "#ssl.truststore.location" : "/path/to/truststore.jks",
+  "#request.timeout.ms" : 30000,
+  "bootstrap.servers" : "localhost:9092",
+  "#enable.auto.commit" : true,
+  "#security.protocol" : "SSL",
+  "#ssl.keystore.password" : "keystore-password",
+  "#ssl.key.password" : "key-password"
+}

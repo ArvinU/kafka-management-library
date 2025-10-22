@@ -40,6 +40,21 @@ public class ConnectionFactory {
     }
     
     /**
+     * Test constructor that bypasses connection validation.
+     * This should only be used for testing purposes.
+     * 
+     * @param kafkaConfig Kafka configuration
+     * @param schemaRegistryConfig Schema Registry configuration
+     * @param skipValidation If true, skips connection validation
+     */
+    public ConnectionFactory(KafkaConfig kafkaConfig, SchemaRegistryConfig schemaRegistryConfig, boolean skipValidation) {
+        this.kafkaConfig = kafkaConfig;
+        this.schemaRegistryConfig = schemaRegistryConfig;
+        this.connectionValidator = new ConnectionValidator(kafkaConfig, schemaRegistryConfig);
+        this.connectionsValidated = skipValidation; // Skip validation if requested
+    }
+    
+    /**
      * Creates a Kafka AdminClient with the configured settings.
      * Validates connection before creating the client.
      * 

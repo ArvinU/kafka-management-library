@@ -1,0 +1,13 @@
+com/mycompany/kafka/ComprehensiveFastTest.class
+com/mycompany/kafka/KafkaManagementLibraryTest.class
+com/mycompany/kafka/ErrorHandlingTest.class
+com/mycompany/kafka/manager/TopicQueriesTest.class
+com/mycompany/kafka/manager/SimpleSchemaManagerTest.class
+com/mycompany/kafka/TestKafkaConfig.class
+com/mycompany/kafka/TestKafkaManagementLibrary.class
+com/mycompany/kafka/FastKafkaManagementLibraryTest.class
+com/mycompany/kafka/TestKafkaConfigFactory.class
+com/mycompany/kafka/UltraFastErrorHandlingTest.class
+com/mycompany/kafka/FastTestSuite.class
+com/mycompany/kafka/manager/TopicOperationsTest.class
+com/mycompany/kafka/manager/TopicManagerTest.class

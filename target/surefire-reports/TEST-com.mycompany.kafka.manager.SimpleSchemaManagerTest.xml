@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.255" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.129" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="GB"/>
     <property name="sun.boot.library.path" value="/usr/local/Cellar/openjdk/13.0.2+8_2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/arvinubhi/kafka-management-library/target/surefire/surefirebooter-20251022002243018_3.jar /Users/arvinubhi/kafka-management-library/target/surefire 2025-10-22T00-22-42_930-jvmRun1 surefire-20251022002243018_1tmp surefire_0-20251022002243018_2tmp"/>
+    <property name="sun.java.command" value="/Users/arvinubhi/kafka-management-library/target/surefire/surefirebooter-20251022014351012_3.jar /Users/arvinubhi/kafka-management-library/target/surefire 2025-10-22T01-43-50_910-jvmRun1 surefire-20251022014351012_1tmp surefire_0-20251022014351012_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/arvinubhi/kafka-management-library/target/test-classes:/Users/arvinubhi/kafka-management-library/target/classes:/Users/arvinubhi/.m2/repository/org/apache/kafka/kafka-clients/3.5.1/kafka-clients-3.5.1.jar:/Users/arvinubhi/.m2/repository/com/github/luben/zstd-jni/1.5.5-1/zstd-jni-1.5.5-1.jar:/Users/arvinubhi/.m2/repository/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar:/Users/arvinubhi/.m2/repository/org/xerial/snappy/snappy-java/1.1.10.1/snappy-java-1.1.10.1.jar:/Users/arvinubhi/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/Users/arvinubhi/.m2/repository/io/confluent/kafka-schema-registry-client/7.5.1/kafka-schema-registry-client-7.5.1.jar:/Users/arvinubhi/.m2/repository/org/yaml/snakeyaml/2.0/snakeyaml-2.0.jar:/Users/arvinubhi/.m2/repository/org/apache/avro/avro/1.11.0/avro-1.11.0.jar:/Users/arvinubhi/.m2/repository/org/apache/commons/commons-compress/1.21/commons-compress-1.21.jar:/Users/arvinubhi/.m2/repository/io/swagger/core/v3/swagger-annotations/2.1.10/swagger-annotations-2.1.10.jar:/Users/arvinubhi/.m2/repository/com/google/guava/guava/32.0.1-jre/guava-32.0.1-jre.jar:/Users/arvinubhi/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:/Users/arvinubhi/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/arvinubhi/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/arvinubhi/.m2/repository/org/checkerframework/checker-qual/3.33.0/checker-qual-3.33.0.jar:/Users/arvinubhi/.m2/repository/com/google/errorprone/error_prone_annotations/2.18.0/error_prone_annotations-2.18.0.jar:/Users/arvinubhi/.m2/repository/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/Users/arvinubhi/.m2/repository/io/confluent/common-utils/7.5.1/common-utils-7.5.1.jar:/Users/arvinubhi/.m2/repository/org/slf4j/slf4j-simple/1.7.36/slf4j-simple-1.7.36.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.2/jackson-databind-2.15.2.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.2/jackson-annotations-2.15.2.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.2/jackson-core-2.15.2.jar:/Users/arvinubhi/.m2/repository/org/apache/kafka/kafka-streams/3.5.1/kafka-streams-3.5.1.jar:/Users/arvinubhi/.m2/repository/org/rocksdb/rocksdbjni/7.1.2/rocksdbjni-7.1.2.jar:/Users/arvinubhi/.m2/repository/io/confluent/kafka-avro-serializer/7.5.1/kafka-avro-serializer-7.5.1.jar:/Users/arvinubhi/.m2/repository/io/confluent/kafka-schema-serializer/7.5.1/kafka-schema-serializer-7.5.1.jar:/Users/arvinubhi/.m2/repository/io/confluent/logredactor/1.0.12/logredactor-1.0.12.jar:/Users/arvinubhi/.m2/repository/com/google/re2j/re2j/1.6/re2j-1.6.jar:/Users/arvinubhi/.m2/repository/io/confluent/logredactor-metrics/1.0.12/logredactor-metrics-1.0.12.jar:/Users/arvinubhi/.m2/repository/com/eclipsesource/minimal-json/minimal-json/0.9.5/minimal-json-0.9.5.jar:/Users/arvinubhi/.m2/repository/io/confluent/kafka-json-schema-serializer/7.5.1/kafka-json-schema-serializer-7.5.1.jar:/Users/arvinubhi/.m2/repository/io/confluent/kafka-json-schema-provider/7.5.1/kafka-json-schema-provider-7.5.1.jar:/Users/arvinubhi/.m2/repository/com/github/erosb/everit-json-schema/1.14.2/everit-json-schema-1.14.2.jar:/Users/arvinubhi/.m2/repository/org/json/json/20230227/json-20230227.jar:/Users/arvinubhi/.m2/repository/commons-validator/commons-validator/1.7/commons-validator-1.7.jar:/Users/arvinubhi/.m2/repository/commons-digester/commons-digester/2.1/commons-digester-2.1.jar:/Users/arvinubhi/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/Users/arvinubhi/.m2/repository/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar:/Users/arvinubhi/.m2/repository/com/damnhandy/handy-uri-templates/2.1.8/handy-uri-templates-2.1.8.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-guava/2.14.2/jackson-datatype-guava-2.14.2.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.14.2/jackson-datatype-jdk8-2.14.2.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-joda/2.14.2/jackson-datatype-joda-2.14.2.jar:/Users/arvinubhi/.m2/repository/joda-time/joda-time/2.10.8/joda-time-2.10.8.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.14.2/jackson-datatype-jsr310-2.14.2.jar:/Users/arvinubhi/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.14.2/jackson-module-parameter-names-2.14.2.jar:/Users/arvinubhi/.m2/repository/com/kjetland/mbknor-jackson-jsonschema_2.13/1.0.39/mbknor-jackson-jsonschema_2.13-1.0.39.jar:/Users/arvinubhi/.m2/repository/org/scala-lang/scala-library/2.13.1/scala-library-2.13.1.jar:/Users/arvinubhi/.m2/repository/javax/validation/validation-api/2.0.1.Final/validation-api-2.0.1.Final.jar:/Users/arvinubhi/.m2/repository/io/github/classgraph/classgraph/4.8.21/classgraph-4.8.21.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.6.0/kotlin-stdlib-1.6.0.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.6.0/kotlin-stdlib-common-1.6.0.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/kotlin/kotlin-scripting-jvm/1.6.0/kotlin-scripting-jvm-1.6.0.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/kotlin/kotlin-script-runtime/1.6.0/kotlin-script-runtime-1.6.0.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/kotlin/kotlin-scripting-common/1.6.0/kotlin-scripting-common-1.6.0.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/kotlin/kotlin-scripting-compiler-embeddable/1.6.0/kotlin-scripting-compiler-embeddable-1.6.0.jar:/Users/arvinubhi/.m2/repository/org/jetbrains/kotlin/kotlin-scripting-compiler-impl-embeddable/1.6.0/kotlin-scripting-compiler-impl-embeddable-1.6.0.jar:/Users/arvinubhi/.m2/repository/io/confluent/kafka-json-serializer/7.5.1/kafka-json-serializer-7.5.1.jar:/Users/arvinubhi/.m2/repository/io/confluent/common-config/7.5.1/common-config-7.5.1.jar:/Users/arvinubhi/.m2/repository/org/junit/jupiter/junit-jupiter/5.9.2/junit-jupiter-5.9.2.jar:/Users/arvinubhi/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar:/Users/arvinubhi/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/arvinubhi/.m2/repository/org/junit/platform/junit-platform-commons/1.9.2/junit-platform-commons-1.9.2.jar:/Users/arvinubhi/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/arvinubhi/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.2/junit-jupiter-params-5.9.2.jar:/Users/arvinubhi/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.2/junit-jupiter-engine-5.9.2.jar:/Users/arvinubhi/.m2/repository/org/junit/platform/junit-platform-engine/1.9.2/junit-platform-engine-1.9.2.jar:/Users/arvinubhi/.m2/repository/org/mockito/mockito-core/4.11.0/mockito-core-4.11.0.jar:/Users/arvinubhi/.m2/repository/net/bytebuddy/byte-buddy/1.12.19/byte-buddy-1.12.19.jar:/Users/arvinubhi/.m2/repository/net/bytebuddy/byte-buddy-agent/1.12.19/byte-buddy-agent-1.12.19.jar:/Users/arvinubhi/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/Users/arvinubhi/.m2/repository/org/mockito/mockito-junit-jupiter/4.11.0/mockito-junit-jupiter-4.11.0.jar:"/>
@@ -28,7 +28,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/Users/arvinubhi/kafka-management-library/target/surefire/surefirebooter-20251022002243018_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/arvinubhi/kafka-management-library/target/surefire/surefirebooter-20251022014351012_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="13.0.2+8"/>
@@ -53,18 +53,18 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="57.0"/>
   </properties>
-  <testcase name="testRegisterSchema" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.218">
+  <testcase name="testRegisterSchema" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.103">
     <system-err><![CDATA[[main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Registering schema for subject: test-subject
 [main] WARN com.mycompany.kafka.manager.SimpleSchemaManager - Schema registration is not fully implemented due to API changes
 [main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Mock registered schema with ID: 1 for subject: test-subject
 ]]></system-err>
   </testcase>
-  <testcase name="testSubjectExists_NotExists" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.007">
+  <testcase name="testSubjectExists_NotExists" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.003">
     <system-err><![CDATA[[main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Checking if subject exists: non-existing-subject
 [main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Subject non-existing-subject exists: false
 ]]></system-err>
   </testcase>
-  <testcase name="testSubjectExists_Exception" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.008">
+  <testcase name="testSubjectExists_Exception" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.005">
     <system-err><![CDATA[[main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Checking if subject exists: test-subject
 [main] ERROR com.mycompany.kafka.manager.SimpleSchemaManager - Failed to check if subject exists test-subject: Connection failed
 java.lang.RuntimeException: Connection failed
@@ -147,22 +147,22 @@ java.lang.RuntimeException: Connection failed
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testListSubjects" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.005">
+  <testcase name="testListSubjects" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.002">
     <system-err><![CDATA[[main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Listing all subjects
 [main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Found 2 subjects
 ]]></system-err>
   </testcase>
-  <testcase name="testSubjectExists_Exists" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.002">
+  <testcase name="testSubjectExists_Exists" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.003">
     <system-err><![CDATA[[main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Checking if subject exists: existing-subject
 [main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Subject existing-subject exists: true
 ]]></system-err>
   </testcase>
-  <testcase name="testGetSchemaById" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.003">
+  <testcase name="testGetSchemaById" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.002">
     <system-err><![CDATA[[main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Getting schema by ID: 1
 [main] WARN com.mycompany.kafka.manager.SimpleSchemaManager - Schema retrieval is not fully implemented due to API changes
 [main] INFO com.mycompany.kafka.manager.SimpleSchemaManager - Mock retrieved schema by ID: 1
 ]]></system-err>
   </testcase>
-  <testcase name="testGetSchemaRegistryClient" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.002"/>
-  <testcase name="testGetConnectionFactory" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.002"/>
+  <testcase name="testGetSchemaRegistryClient" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.001"/>
+  <testcase name="testGetConnectionFactory" classname="com.mycompany.kafka.manager.SimpleSchemaManagerTest" time="0.001"/>
 </testsuite>

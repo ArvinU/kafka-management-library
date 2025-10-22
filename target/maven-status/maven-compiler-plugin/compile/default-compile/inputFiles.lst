@@ -1,5 +1,6 @@
 /Users/arvinubhi/kafka-management-library/src/main/java/com/mycompany/kafka/cli/KafkaCLI.java
 /Users/arvinubhi/kafka-management-library/src/main/java/com/mycompany/kafka/manager/TopicManager.java
+/Users/arvinubhi/kafka-management-library/src/main/java/com/mycompany/kafka/manager/EnhancedMessageManager.java
 /Users/arvinubhi/kafka-management-library/src/main/java/com/mycompany/kafka/dto/ConsumerGroupInfo.java
 /Users/arvinubhi/kafka-management-library/src/main/java/com/mycompany/kafka/manager/MessageViewer.java
 /Users/arvinubhi/kafka-management-library/src/main/java/com/mycompany/kafka/exception/KafkaManagementException.java

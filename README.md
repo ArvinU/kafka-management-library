@@ -21,6 +21,8 @@ A comprehensive Java library for managing Confluent Kafka brokers and Schema Reg
 - **Advanced Message Filtering**: Filter messages by key/value patterns
 - **Partition Information**: Get detailed partition and offset information
 - **Consumer Health Monitoring**: Monitor consumer group health and performance
+- **Auto-Register Schema**: Automatically register schemas when sending messages with schema support
+- **Schema ID Management**: Send messages with specific schema IDs for better performance
 
 ### 🔧 Supported Operations
 
@@ -59,6 +61,8 @@ A comprehensive Java library for managing Confluent Kafka brokers and Schema Reg
 
 #### Schema Registry Operations
 - Register schemas (Avro, JSON, Protobuf)
+- **Auto-register schemas** when sending messages
+- **Send messages with specific schema IDs** for better performance
 - Get schemas by ID or subject
 - List subjects and schemas
 - Delete subjects and schema versions
@@ -120,6 +124,8 @@ create-topic <name> <partitions> <replication> [type]  # Create a topic
 # Message operations
 messages peek <topic> [count]                  # Peek at messages
 send-message <topic> <key> <value>             # Send a message
+send-message-with-schema <topic> <key> <value> <subject> <schema>  # Send message with auto schema registration
+send-message-with-schema-id <topic> <key> <value> <schema-id>       # Send message with specific schema ID
 peek-messages <topic> [count]                  # Peek at messages (alias)
 
 # Consumer operations
@@ -243,6 +249,7 @@ public class KafkaManagementLibrary {
     // Manager Access
     public TopicManager getTopicManager()
     public MessageManager getMessageManager()
+    public EnhancedMessageManager getEnhancedMessageManager()
     public ConsumerManager getConsumerManager()
     public SessionManager getSessionManager()
     public SchemaManager getSchemaManager()
@@ -357,6 +364,23 @@ public class MessageViewer {
     public Map<Integer, Long> getPartitionInfo(String topicName)
     public List<ConsumerRecord<String, String>> peekMessagesByKey(String topicName, String keyPattern, int maxRecords)
     public List<ConsumerRecord<String, String>> peekMessagesByValue(String topicName, String valuePattern, int maxRecords)
+}
+```
+
+#### EnhancedMessageManager
+```java
+public class EnhancedMessageManager {
+    public Future<RecordMetadata> sendMessageWithSchemaId(String topicName, String key, String value, int schemaId)
+    public Future<RecordMetadata> sendMessageWithAutoSchema(String topicName, String key, String value, String subject, String schema)
+    public Future<RecordMetadata> sendAvroMessageWithSchemaId(String topicName, String key, Object value, int schemaId)
+    public Future<RecordMetadata> sendJsonSchemaMessageWithSchemaId(String topicName, String key, Object value, int schemaId)
+    public int registerSchemaIfNotExists(String subject, String schema)
+    public int registerSchema(String subject, String schema)
+    public int getLatestSchemaId(String subject)
+    public boolean subjectExists(String subject)
+    public String getSchemaById(int schemaId)
+    public ConnectionFactory getConnectionFactory()
+    public SchemaRegistryClient getSchemaRegistryClient()
 }
 ```
 
@@ -550,6 +574,17 @@ public class MyEnhancedApplication {
 }
 ```
 
+### Auto-Register Schema Examples
+
+See `AUTO_REGISTER_SCHEMA_EXAMPLES.md` for comprehensive examples of the auto-register schema functionality:
+
+- Basic auto-register schema usage
+- Performance optimization with schema IDs
+- Avro schema examples
+- Error handling patterns
+- CLI usage examples
+- Best practices and troubleshooting
+
 ### Topic Management Example
 
 ```java
@@ -632,6 +667,39 @@ System.out.println("Registered schema with ID: " + schemaId);
 // Get schema information
 SchemaInfo schemaInfo = library.getSchemaById(schemaId);
 System.out.println("Schema info: " + schemaInfo);
+```
+
+### Auto-Register Schema Example
+
+```java
+// Send message with auto schema registration
+String userSchema = "{\n" +
+    "  \"type\": \"object\",\n" +
+    "  \"properties\": {\n" +
+    "    \"id\": {\"type\": \"integer\"},\n" +
+    "    \"name\": {\"type\": \"string\"},\n" +
+    "    \"email\": {\"type\": \"string\"}\n" +
+    "  },\n" +
+    "  \"required\": [\"id\", \"name\"]\n" +
+    "}";
+
+// Auto-register schema and send message
+library.getEnhancedMessageManager().sendMessageWithAutoSchema(
+    "user-events", 
+    "user-123", 
+    "{\"id\": 123, \"name\": \"John Doe\", \"email\": \"john@example.com\"}", 
+    "user-event-value", 
+    userSchema
+);
+
+// Send message with specific schema ID (better performance)
+int schemaId = 1; // Previously registered schema ID
+library.getEnhancedMessageManager().sendMessageWithSchemaId(
+    "user-events", 
+    "user-456", 
+    "{\"id\": 456, \"name\": \"Jane Smith\"}", 
+    schemaId
+);
 ```
 
 ### Transaction Example
@@ -785,6 +853,8 @@ scripts\run-cli.bat --generate-configs
 | `create-topic <name> <partitions> <replication> [type]` | Create a topic | `create-topic my-topic 3 1 compacted` |
 | `messages peek <topic> [count]` | Peek at messages | `messages peek my-topic 10` |
 | `send-message <topic> <key> <value>` | Send a message | `send-message my-topic key1 value1` |
+| `send-message-with-schema <topic> <key> <value> <subject> <schema>` | Send message with auto schema registration | `send-message-with-schema my-topic key1 '{"id":123}' user-value '{"type":"object"}'` |
+| `send-message-with-schema-id <topic> <key> <value> <schema-id>` | Send message with specific schema ID | `send-message-with-schema-id my-topic key1 '{"id":123}' 1` |
 | `consumers list` | List consumer groups | `consumers list` |
 | `consumers info <group-id>` | Get consumer group info | `consumers info my-group` |
 | `sessions summary` | Get session summary | `sessions summary` |

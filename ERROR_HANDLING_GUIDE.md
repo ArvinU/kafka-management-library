@@ -190,6 +190,51 @@ All error codes follow the pattern: `KML_[CATEGORY]_[NUMBER]`
   - `KML_SCHEMA_5007` - Failed to check subject existence
   - `KML_VAL_8003` - Invalid subject name
 
+## Enhanced Message Management with Auto-Register Schema
+
+### `sendMessageWithAutoSchema(String topicName, String key, String value, String subject, String schema)`
+- **Success**: Message is sent with auto-registered schema and returns Future containing RecordMetadata
+- **Failure**: Throws `KafkaManagementException` with error codes:
+  - `KML_MSG_3001` - Message sending failed
+  - `KML_SCHEMA_5001` - Schema registration failed
+  - `KML_SCHEMA_5004` - Invalid schema
+  - `KML_VAL_8003` - Invalid subject name
+  - `KML_VAL_8007` - Schema is null
+  - `KML_MSG_3008` - Message operation timeout
+  - `KML_TOPIC_2003` - Topic not found
+  - `KML_VAL_8001` - Invalid topic name
+  - `KML_VAL_8006` - Message value is null
+
+### `sendMessageWithSchemaId(String topicName, String key, String value, int schemaId)`
+- **Success**: Message is sent with specific schema ID and returns Future containing RecordMetadata
+- **Failure**: Throws `KafkaManagementException` with error codes:
+  - `KML_MSG_3001` - Message sending failed
+  - `KML_SCHEMA_5002` - Schema retrieval failed
+  - `KML_SCHEMA_5003` - Schema not found
+  - `KML_MSG_3008` - Message operation timeout
+  - `KML_TOPIC_2003` - Topic not found
+  - `KML_VAL_8001` - Invalid topic name
+  - `KML_VAL_8006` - Message value is null
+  - `KML_VAL_8010` - Invalid schema ID (must be > 0)
+
+### `registerSchemaIfNotExists(String subject, String schema)`
+- **Success**: Schema is registered if it doesn't exist, returns schema ID
+- **Failure**: Throws `KafkaManagementException` with error codes:
+  - `KML_SCHEMA_5001` - Schema registration failed
+  - `KML_SCHEMA_5002` - Schema retrieval failed
+  - `KML_SCHEMA_5004` - Invalid schema
+  - `KML_VAL_8003` - Invalid subject name
+  - `KML_VAL_8007` - Schema is null
+  - `KML_CONN_1002` - Schema Registry connection failed
+
+### `getLatestSchemaId(String subject)`
+- **Success**: Returns the latest schema ID for the subject
+- **Failure**: Throws `KafkaManagementException` with error codes:
+  - `KML_SCHEMA_5002` - Schema retrieval failed
+  - `KML_SCHEMA_5003` - Schema not found
+  - `KML_VAL_8003` - Invalid subject name
+  - `KML_CONN_1002` - Schema Registry connection failed
+
 ## Session/Transaction Management
 
 ### `createTransactionalProducer(String transactionId)`

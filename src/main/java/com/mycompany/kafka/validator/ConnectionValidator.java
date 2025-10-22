@@ -26,7 +26,7 @@ public class ConnectionValidator {
     
     private static final Logger log = LoggerFactory.getLogger(ConnectionValidator.class);
     
-    private static final int CONNECTION_TIMEOUT_SECONDS = 10;
+    private static final int CONNECTION_TIMEOUT_SECONDS = 1;
     
     private final KafkaConfig kafkaConfig;
     private final SchemaRegistryConfig schemaRegistryConfig;

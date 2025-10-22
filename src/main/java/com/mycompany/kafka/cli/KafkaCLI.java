@@ -170,6 +170,8 @@ public class KafkaCLI {
         System.out.println("  sessions summary               - Get session summary");
         System.out.println("  create-topic <name> <partitions> <replication> [type] - Create a topic");
         System.out.println("  send-message <topic> <key> <value> - Send a message");
+        System.out.println("  send-message-with-schema <topic> <key> <value> <subject> <schema> - Send message with auto schema registration");
+        System.out.println("  send-message-with-schema-id <topic> <key> <value> <schema-id> - Send message with specific schema ID");
         System.out.println("  peek-messages <topic> [count]  - Peek at messages");
         System.out.println("  list-consumers                 - List active consumers");
         System.out.println("  consumer-health <group-id>    - Get consumer group health");
@@ -234,6 +236,12 @@ public class KafkaCLI {
             case "send-message":
                 handleSendMessageCommand(parts);
                 break;
+            case "send-message-with-schema":
+                handleSendMessageWithSchemaCommand(parts);
+                break;
+            case "send-message-with-schema-id":
+                handleSendMessageWithSchemaIdCommand(parts);
+                break;
             case "peek-messages":
                 handlePeekMessagesCommand(parts);
                 break;
@@ -260,6 +268,8 @@ public class KafkaCLI {
         System.out.println("  sessions summary               - Get session summary");
         System.out.println("  create-topic <name> <partitions> <replication> [type] - Create a topic");
         System.out.println("  send-message <topic> <key> <value> - Send a message");
+        System.out.println("  send-message-with-schema <topic> <key> <value> <subject> <schema> - Send message with auto schema registration");
+        System.out.println("  send-message-with-schema-id <topic> <key> <value> <schema-id> - Send message with specific schema ID");
         System.out.println("  peek-messages <topic> [count]  - Peek at messages");
         System.out.println("  list-consumers                 - List active consumers");
         System.out.println("  consumer-health <group-id>    - Get consumer group health");
@@ -548,6 +558,68 @@ public class KafkaCLI {
             }
         } catch (Exception e) {
             log.error("Error closing CLI resources: {}", e.getMessage(), e);
+        }
+    }
+    
+    private void handleSendMessageWithSchemaCommand(String[] parts) {
+        if (parts.length < 6) {
+            System.out.println("Usage: send-message-with-schema <topic> <key> <value> <subject> <schema>");
+            return;
+        }
+        
+        String topic = parts[1];
+        String key = parts[2];
+        String value = parts[3];
+        String subject = parts[4];
+        String schema = parts[5];
+        
+        sendMessageWithSchema(topic, key, value, subject, schema);
+    }
+    
+    private void handleSendMessageWithSchemaIdCommand(String[] parts) {
+        if (parts.length < 5) {
+            System.out.println("Usage: send-message-with-schema-id <topic> <key> <value> <schema-id>");
+            return;
+        }
+        
+        String topic = parts[1];
+        String key = parts[2];
+        String value = parts[3];
+        int schemaId = Integer.parseInt(parts[4]);
+        
+        sendMessageWithSchemaId(topic, key, value, schemaId);
+    }
+    
+    private void sendMessageWithSchema(String topic, String key, String value, String subject, String schema) {
+        try {
+            System.out.println("Sending message with auto schema registration...");
+            System.out.println("Topic: " + topic);
+            System.out.println("Key: " + key);
+            System.out.println("Value: " + value);
+            System.out.println("Subject: " + subject);
+            System.out.println("Schema: " + schema);
+            
+            library.getEnhancedMessageManager().sendMessageWithAutoSchema(topic, key, value, subject, schema);
+            System.out.println("Message sent successfully with auto schema registration!");
+        } catch (Exception e) {
+            System.err.println("Failed to send message with schema: " + e.getMessage());
+            log.error("Failed to send message with schema", e);
+        }
+    }
+    
+    private void sendMessageWithSchemaId(String topic, String key, String value, int schemaId) {
+        try {
+            System.out.println("Sending message with schema ID...");
+            System.out.println("Topic: " + topic);
+            System.out.println("Key: " + key);
+            System.out.println("Value: " + value);
+            System.out.println("Schema ID: " + schemaId);
+            
+            library.getEnhancedMessageManager().sendMessageWithSchemaId(topic, key, value, schemaId);
+            System.out.println("Message sent successfully with schema ID!");
+        } catch (Exception e) {
+            System.err.println("Failed to send message with schema ID: " + e.getMessage());
+            log.error("Failed to send message with schema ID", e);
         }
     }
 }
