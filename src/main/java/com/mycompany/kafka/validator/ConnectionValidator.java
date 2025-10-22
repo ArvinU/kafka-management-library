@@ -26,7 +26,7 @@ public class ConnectionValidator {
     
     private static final Logger log = LoggerFactory.getLogger(ConnectionValidator.class);
     
-    private static final int CONNECTION_TIMEOUT_SECONDS = 1;
+    private static final int CONNECTION_TIMEOUT_SECONDS = 5;  // Increased to 5 seconds for better reliability
     
     private final KafkaConfig kafkaConfig;
     private final SchemaRegistryConfig schemaRegistryConfig;
@@ -55,7 +55,11 @@ public class ConnectionValidator {
             Properties props = kafkaConfig.toProperties();
             props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
             props.setProperty(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, String.valueOf(CONNECTION_TIMEOUT_SECONDS * 1000));
-            props.setProperty(AdminClientConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG, "30000");
+            props.setProperty(AdminClientConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG, "10000");  // 10 second connection timeout
+            props.setProperty(AdminClientConfig.RETRIES_CONFIG, "1");  // Only 1 retry
+            props.setProperty(AdminClientConfig.RETRY_BACKOFF_MS_CONFIG, "1000");  // 1 second backoff
+            props.setProperty(AdminClientConfig.RECONNECT_BACKOFF_MS_CONFIG, "100");  // 100ms reconnect backoff
+            props.setProperty(AdminClientConfig.RECONNECT_BACKOFF_MAX_MS_CONFIG, "1000");  // Max 1 second reconnect backoff
             
             adminClient = AdminClient.create(props);
             
