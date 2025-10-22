@@ -2,4 +2,5 @@
 /Users/arvinubhi/kafka-management-library/src/test/java/com/mycompany/kafka/manager/TopicQueriesTest.java
 /Users/arvinubhi/kafka-management-library/src/test/java/com/mycompany/kafka/KafkaManagementLibraryTest.java
 /Users/arvinubhi/kafka-management-library/src/test/java/com/mycompany/kafka/manager/TopicManagerTest.java
+/Users/arvinubhi/kafka-management-library/src/test/java/com/mycompany/kafka/ErrorHandlingTest.java
 /Users/arvinubhi/kafka-management-library/src/test/java/com/mycompany/kafka/manager/TopicOperationsTest.java

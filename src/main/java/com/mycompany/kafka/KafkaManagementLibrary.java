@@ -2,6 +2,8 @@ package com.mycompany.kafka;
 
 import com.mycompany.kafka.config.KafkaConfig;
 import com.mycompany.kafka.config.SchemaRegistryConfig;
+import com.mycompany.kafka.constants.ErrorConstants;
+import com.mycompany.kafka.exception.KafkaManagementException;
 import com.mycompany.kafka.factory.ConnectionFactory;
 import com.mycompany.kafka.manager.*;
 import com.mycompany.kafka.manager.SimpleSchemaManager;
@@ -28,24 +30,40 @@ public class KafkaManagementLibrary {
     
     /**
      * Constructor to initialize KafkaManagementLibrary with Kafka and Schema Registry configurations.
+     * Validates connections during initialization.
      * 
      * @param kafkaConfig Kafka configuration
      * @param schemaRegistryConfig Schema Registry configuration
+     * @throws KafkaManagementException if connection validation fails
      */
-    public KafkaManagementLibrary(KafkaConfig kafkaConfig, SchemaRegistryConfig schemaRegistryConfig) {
+    public KafkaManagementLibrary(KafkaConfig kafkaConfig, SchemaRegistryConfig schemaRegistryConfig) throws KafkaManagementException {
         log.info("Initializing KafkaManagementLibrary");
         
-        this.connectionFactory = new ConnectionFactory(kafkaConfig, schemaRegistryConfig);
-        this.topicManager = new TopicManager(connectionFactory);
-        this.messageManager = new MessageManager(connectionFactory);
-        this.consumerManager = new ConsumerManager(connectionFactory);
-        this.sessionManager = new SessionManager(connectionFactory);
-        this.schemaManager = new SimpleSchemaManager(connectionFactory);
-        this.messageViewer = new MessageViewer(connectionFactory);
-        this.sessionViewer = new SessionViewer(connectionFactory);
-        this.topicTypeManager = new TopicTypeManager(connectionFactory);
-        
-        log.info("KafkaManagementLibrary initialized successfully");
+        try {
+            this.connectionFactory = new ConnectionFactory(kafkaConfig, schemaRegistryConfig);
+            
+            // Validate connections before initializing managers
+            connectionFactory.validateConnections();
+            
+            this.topicManager = new TopicManager(connectionFactory);
+            this.messageManager = new MessageManager(connectionFactory);
+            this.consumerManager = new ConsumerManager(connectionFactory);
+            this.sessionManager = new SessionManager(connectionFactory);
+            this.schemaManager = new SimpleSchemaManager(connectionFactory);
+            this.messageViewer = new MessageViewer(connectionFactory);
+            this.sessionViewer = new SessionViewer(connectionFactory);
+            this.topicTypeManager = new TopicTypeManager(connectionFactory);
+            
+            log.info("KafkaManagementLibrary initialized successfully");
+        } catch (Exception e) {
+            if (e instanceof KafkaManagementException) {
+                throw e;
+            }
+            throw new KafkaManagementException(
+                ErrorConstants.KAFKA_CONNECTION_FAILED,
+                "Failed to initialize KafkaManagementLibrary",
+                e);
+        }
     }
     
     /**
@@ -53,8 +71,9 @@ public class KafkaManagementLibrary {
      * 
      * @param bootstrapServers Kafka bootstrap servers (e.g., "localhost:9092")
      * @param schemaRegistryUrl Schema Registry URL (e.g., "http://localhost:8081")
+     * @throws KafkaManagementException if connection validation fails
      */
-    public KafkaManagementLibrary(String bootstrapServers, String schemaRegistryUrl) {
+    public KafkaManagementLibrary(String bootstrapServers, String schemaRegistryUrl) throws KafkaManagementException {
         this(new KafkaConfig(bootstrapServers), new SchemaRegistryConfig(schemaRegistryUrl));
     }
     
@@ -63,12 +82,27 @@ public class KafkaManagementLibrary {
     /**
      * Creates a new Kafka topic.
      * 
+     * Success: Topic is created successfully with specified partitions and replication factor.
+     * Failure: Throws KafkaManagementException with error code KML_TOPIC_2001 if topic creation fails,
+     * KML_TOPIC_2004 if topic already exists, or KML_VAL_8004/KML_VAL_8005 for invalid parameters.
+     * 
      * @param topicName The name of the topic to create
      * @param numPartitions The number of partitions for the topic
      * @param replicationFactor The replication factor for the topic
+     * @throws KafkaManagementException if topic creation fails
      */
-    public void createTopic(String topicName, int numPartitions, short replicationFactor) {
-        topicManager.createTopic(topicName, numPartitions, replicationFactor);
+    public void createTopic(String topicName, int numPartitions, short replicationFactor) throws KafkaManagementException {
+        try {
+            topicManager.createTopic(topicName, numPartitions, replicationFactor);
+        } catch (Exception e) {
+            if (e instanceof KafkaManagementException) {
+                throw e;
+            }
+            throw new KafkaManagementException(
+                ErrorConstants.TOPIC_CREATION_FAILED,
+                ErrorConstants.formatMessage(ErrorConstants.TOPIC_CREATION_FAILED_MSG, topicName, e.getMessage()),
+                e);
+        }
     }
     
     /**
@@ -95,10 +129,24 @@ public class KafkaManagementLibrary {
     /**
      * Lists all available topics.
      * 
+     * Success: Returns a list of topic names from the Kafka cluster.
+     * Failure: Throws KafkaManagementException with error code KML_TOPIC_2005 if listing topics fails.
+     * 
      * @return List of topic names
+     * @throws KafkaManagementException if listing topics fails
      */
-    public java.util.List<String> listTopics() {
-        return topicManager.listTopics();
+    public java.util.List<String> listTopics() throws KafkaManagementException {
+        try {
+            return topicManager.listTopics();
+        } catch (Exception e) {
+            if (e instanceof KafkaManagementException) {
+                throw e;
+            }
+            throw new KafkaManagementException(
+                ErrorConstants.TOPIC_LIST_FAILED,
+                ErrorConstants.formatMessage(ErrorConstants.TOPIC_LIST_FAILED_MSG, e.getMessage()),
+                e);
+        }
     }
     
     /**
@@ -135,13 +183,28 @@ public class KafkaManagementLibrary {
     /**
      * Sends a message to a Kafka topic.
      * 
+     * Success: Message is sent successfully and returns a Future containing RecordMetadata.
+     * Failure: Throws KafkaManagementException with error code KML_MSG_3001 if message sending fails,
+     * KML_MSG_3003 if serialization fails, or KML_MSG_3008 if operation times out.
+     * 
      * @param topicName The name of the topic
      * @param key The message key
      * @param value The message value
      * @return Future containing RecordMetadata
+     * @throws KafkaManagementException if message sending fails
      */
-    public java.util.concurrent.Future<org.apache.kafka.clients.producer.RecordMetadata> sendMessage(String topicName, String key, String value) {
-        return messageManager.sendMessage(topicName, key, value);
+    public java.util.concurrent.Future<org.apache.kafka.clients.producer.RecordMetadata> sendMessage(String topicName, String key, String value) throws KafkaManagementException {
+        try {
+            return messageManager.sendMessage(topicName, key, value);
+        } catch (Exception e) {
+            if (e instanceof KafkaManagementException) {
+                throw e;
+            }
+            throw new KafkaManagementException(
+                ErrorConstants.MESSAGE_SEND_FAILED,
+                ErrorConstants.formatMessage(ErrorConstants.MESSAGE_SEND_FAILED_MSG, topicName, e.getMessage()),
+                e);
+        }
     }
     
     /**
