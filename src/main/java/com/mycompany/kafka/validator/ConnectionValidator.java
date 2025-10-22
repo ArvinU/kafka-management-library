@@ -184,13 +184,9 @@ public class ConnectionValidator {
             
             throw new KafkaManagementException(errorCode, errorMessage, e);
         } finally {
-            if (client != null) {
-                try {
-                    client.close();
-                } catch (Exception e) {
-                    log.warn("Error closing Schema Registry client during validation: {}", e.getMessage());
-                }
-            }
+            // Note: CachedSchemaRegistryClient in this version doesn't have a close() method
+            // The client will be garbage collected when it goes out of scope
+            log.debug("Schema Registry client validation completed");
         }
     }
     
