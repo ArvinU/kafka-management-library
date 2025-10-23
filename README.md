@@ -18,6 +18,7 @@ A comprehensive Java library for managing Confluent Kafka brokers and Schema Reg
 - **Topic Types**: Create different types of topics (compacted, high-throughput, low-latency, etc.)
 - **Session Monitoring**: View active sessions and current consumers
 - **CLI Interface**: Command-line interface for interactive and non-interactive usage
+- **Multi-Broker CLI**: Comprehensive CLI for multi-broker and multi-schema registry operations
 - **Advanced Message Filtering**: Filter messages by key/value patterns
 - **Partition Information**: Get detailed partition and offset information
 - **Consumer Health Monitoring**: Monitor consumer group health and performance
@@ -956,6 +957,101 @@ The CLI supports creating different types of topics:
 8. **Topic Types**: Choose appropriate topic types for your use case
 9. **Session Monitoring**: Monitor consumer group health regularly
 10. **CLI Usage**: Use the CLI for quick operations and debugging
+
+## Multi-Broker CLI
+
+The library includes a comprehensive Multi-Broker CLI for managing multiple Kafka brokers and schema registries:
+
+### Multi-Broker CLI Usage
+
+```bash
+# Generate sample multi-broker configuration files
+java -jar kafka-management-library.jar --generate-configs
+
+# Interactive mode
+java -jar kafka-management-library.jar config/multi/multi-kafka-config.json config/multi/multi-schema-registry-config.json
+
+# Non-interactive mode
+java -jar kafka-management-library.jar config/multi/multi-kafka-config.json config/multi/multi-schema-registry-config.json "brokers list"
+```
+
+### Multi-Broker Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `brokers list` | List all brokers and their status | `brokers list` |
+| `brokers status` | Show broker connection status | `brokers status` |
+| `registries list` | List all schema registries and their status | `registries list` |
+| `registries status` | Show schema registry connection status | `registries status` |
+| `topics list <broker-id>` | List topics on specific broker | `topics list broker1` |
+| `topics info <broker-id> <topic-name>` | Get topic information from specific broker | `topics info broker1 my-topic` |
+| `topics create <broker-id> <name> <partitions> <replication> [type]` | Create topic on specific broker | `topics create broker1 my-topic 3 1 compacted` |
+| `topics create-across <broker-ids> <name> <partitions> <replication> <template>` | Create topic across multiple brokers | `topics create-across broker1,broker2 my-topic 3 1 high-throughput` |
+| `messages send <broker-id> <topic> <key> <value>` | Send message to specific broker | `messages send broker1 my-topic key1 "Hello World"` |
+| `messages send-avro <broker-id> <topic> <key> <value>` | Send Avro message to specific broker | `messages send-avro broker1 my-topic key1 "{\"name\":\"John\"}"` |
+| `messages send-json <broker-id> <topic> <key> <value>` | Send JSON Schema message to specific broker | `messages send-json broker1 my-topic key1 "{\"name\":\"John\"}"` |
+| `messages send-with-schema <broker-id> <topic> <key> <value> <subject> <schema>` | Send message with auto schema registration | `messages send-with-schema broker1 my-topic key1 "{\"name\":\"John\"}" user-value '{"type":"object"}'` |
+| `messages send-with-schema-id <broker-id> <topic> <key> <value> <schema-id>` | Send message with specific schema ID | `messages send-with-schema-id broker1 my-topic key1 "{\"name\":\"John\"}" 1` |
+| `messages peek <broker-id> <topic> [count]` | Peek at messages from specific broker | `messages peek broker1 my-topic 10` |
+| `consumers list <broker-id>` | List consumer groups on specific broker | `consumers list broker1` |
+| `consumers info <broker-id> <group-id>` | Get consumer group information from specific broker | `consumers info broker1 my-group` |
+| `consumers delete <broker-id> <group-id>` | Delete consumer group on specific broker | `consumers delete broker1 my-group` |
+| `consumers reset-earliest <broker-id> <group-id>` | Reset consumer group offsets to earliest | `consumers reset-earliest broker1 my-group` |
+| `consumers reset-latest <broker-id> <group-id>` | Reset consumer group offsets to latest | `consumers reset-latest broker1 my-group` |
+| `consumers lag <broker-id> <group-id>` | Get consumer group lag | `consumers lag broker1 my-group` |
+| `sessions create-producer <broker-id> <transaction-id>` | Create transactional producer | `sessions create-producer broker1 tx-001` |
+| `sessions create-consumer <broker-id> <transaction-id> <group-id>` | Create transactional consumer | `sessions create-consumer broker1 tx-001 my-group` |
+| `sessions begin <broker-id> <transaction-id>` | Begin transaction | `sessions begin broker1 tx-001` |
+| `sessions commit <broker-id> <transaction-id>` | Commit transaction | `sessions commit broker1 tx-001` |
+| `sessions abort <broker-id> <transaction-id>` | Abort transaction | `sessions abort broker1 tx-001` |
+| `sessions execute <broker-id> <transaction-id> <group-id>` | Execute transaction with automatic cleanup | `sessions execute broker1 tx-001 my-group` |
+| `schemas register <registry-id> <subject> <schema>` | Register schema on specific registry | `schemas register registry1 user-value '{"type":"object"}'` |
+| `schemas get <registry-id> <schema-id>` | Get schema by ID from specific registry | `schemas get registry1 1` |
+| `schemas list <registry-id>` | List subjects on specific registry | `schemas list registry1` |
+| `test create-topic <broker-id> <topic-name>` | Create test topic | `test create-topic broker1 test-topic` |
+| `test send-messages <broker-id> <topic-name> <count>` | Send test messages | `test send-messages broker1 test-topic 100` |
+| `test execute-transaction <broker-id> <transaction-id> <group-id> <topic-name> <count>` | Execute test transaction | `test execute-transaction broker1 tx-test my-group test-topic 50` |
+| `test cleanup <broker-id> <topic-names> <group-ids>` | Clean up test resources | `test cleanup broker1 test-topic my-group` |
+
+### Multi-Broker Configuration
+
+The Multi-Broker CLI uses JSON configuration files for both Kafka brokers and Schema Registries:
+
+#### Multi-Broker Configuration (`multi-kafka-config.json`)
+```json
+{
+  "brokers": [
+    {
+      "name": "broker1",
+      "bootstrapServers": "localhost:9092",
+      "securityProtocol": "PLAINTEXT"
+    },
+    {
+      "name": "broker2", 
+      "bootstrapServers": "localhost:9093",
+      "securityProtocol": "PLAINTEXT"
+    }
+  ]
+}
+```
+
+#### Multi-Schema Registry Configuration (`multi-schema-registry-config.json`)
+```json
+{
+  "registries": [
+    {
+      "name": "registry1",
+      "url": "http://localhost:8081"
+    },
+    {
+      "name": "registry2",
+      "url": "http://localhost:8082"
+    }
+  ]
+}
+```
+
+For detailed documentation, see [MULTI_CLI_GUIDE.md](MULTI_CLI_GUIDE.md) and [SCRIPTS_GUIDE.md](SCRIPTS_GUIDE.md).
 
 ## Requirements
 
