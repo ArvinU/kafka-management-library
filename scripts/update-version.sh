@@ -26,47 +26,47 @@ mvn versions:set -DnewVersion=$VERSION
 # Update scripts that reference version
 echo "2. Updating scripts..."
 if [ -f "scripts/run-cli.sh" ]; then
-    sed -i "s/kafka-management-library-${CURRENT_VERSION}/kafka-management-library-${VERSION}/g" scripts/run-cli.sh
+    sed -i.bak "s/kafka-management-library-${CURRENT_VERSION}/kafka-management-library-${VERSION}/g" scripts/run-cli.sh
     echo "  - Updated scripts/run-cli.sh"
 fi
 
 if [ -f "scripts/run-cli.bat" ]; then
-    sed -i "s/kafka-management-library-${CURRENT_VERSION}/kafka-management-library-${VERSION}/g" scripts/run-cli.bat
+    sed -i.bak "s/kafka-management-library-${CURRENT_VERSION}/kafka-management-library-${VERSION}/g" scripts/run-cli.bat
     echo "  - Updated scripts/run-cli.bat"
 fi
 
 # Update documentation
 echo "3. Updating documentation..."
 if [ -f "README.md" ]; then
-    sed -i "s/version>$CURRENT_VERSION</version>${VERSION}</g" README.md
-    sed -i "s/${CURRENT_VERSION}/${VERSION}/g" README.md
+    sed -i.bak "s/version>$CURRENT_VERSION</version>${VERSION}</g" README.md
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" README.md
     echo "  - Updated README.md"
 fi
 
 if [ -f "MAVEN_CENTRAL_PUBLISHING_GUIDE.md" ]; then
-    sed -i "s/${CURRENT_VERSION}/${VERSION}/g" MAVEN_CENTRAL_PUBLISHING_GUIDE.md
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" MAVEN_CENTRAL_PUBLISHING_GUIDE.md
     echo "  - Updated MAVEN_CENTRAL_PUBLISHING_GUIDE.md"
 fi
 
 if [ -f "SCRIPTS_GUIDE.md" ]; then
-    sed -i "s/${CURRENT_VERSION}/${VERSION}/g" SCRIPTS_GUIDE.md
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" SCRIPTS_GUIDE.md
     echo "  - Updated SCRIPTS_GUIDE.md"
 fi
 
 if [ -f "MULTI_CLI_GUIDE.md" ]; then
-    sed -i "s/${CURRENT_VERSION}/${VERSION}/g" MULTI_CLI_GUIDE.md
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" MULTI_CLI_GUIDE.md
     echo "  - Updated MULTI_CLI_GUIDE.md"
 fi
 
 # Update publish scripts
 if [ -f "scripts/publish-to-maven-central.sh" ]; then
-    sed -i "s/VERSION=\${1:-.*}/VERSION=\${1:-${VERSION}}/g" scripts/publish-to-maven-central.sh
+    sed -i.bak "s/VERSION=\${1:-.*}/VERSION=\${1:-${VERSION}}/g" scripts/publish-to-maven-central.sh
     echo "  - Updated scripts/publish-to-maven-central.sh"
 fi
 
 if [ -f "scripts/publish-to-maven-central.bat" ]; then
-    sed -i "s/set VERSION=%1/set VERSION=%1/g" scripts/publish-to-maven-central.bat
-    sed -i "s/if \"%VERSION%\"==\"\" set VERSION=.*/if \"%VERSION%\"==\"\" set VERSION=${VERSION}/g" scripts/publish-to-maven-central.bat
+    sed -i.bak "s/set VERSION=%1/set VERSION=%1/g" scripts/publish-to-maven-central.bat
+    sed -i.bak "s/if \"%VERSION%\"==\"\" set VERSION=.*/if \"%VERSION%\"==\"\" set VERSION=${VERSION}/g" scripts/publish-to-maven-central.bat
     echo "  - Updated scripts/publish-to-maven-central.bat"
 fi
 

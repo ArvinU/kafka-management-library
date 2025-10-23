@@ -5,7 +5,7 @@
 
 set -e
 
-VERSION=${1:-"1.0.0"}
+VERSION=${1:-1.0.1}
 echo "Publishing version: $VERSION"
 
 # Check if required environment variables are set
