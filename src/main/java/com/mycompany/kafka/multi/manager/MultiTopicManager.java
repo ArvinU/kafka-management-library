@@ -2,10 +2,11 @@ package com.mycompany.kafka.multi.manager;
 
 import com.mycompany.kafka.constants.ErrorConstants;
 import com.mycompany.kafka.exception.KafkaManagementException;
-import com.mycompany.kafka.factory.MultiConnectionFactory;
+import com.mycompany.kafka.multi.factory.MultiConnectionFactory;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.CreateTopicsResult;
 import org.apache.kafka.clients.admin.DeleteTopicsResult;
+import org.apache.kafka.clients.admin.DescribeTopicsResult;
 import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.admin.TopicDescription;
@@ -15,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -208,7 +208,7 @@ public class MultiTopicManager {
         try {
             AdminClient adminClient = multiConnectionFactory.createAdminClient(brokerName);
             
-            var result = adminClient.describeTopics(Collections.singletonList(topicName));
+            DescribeTopicsResult result = adminClient.describeTopics(Collections.singletonList(topicName));
             Map<String, TopicDescription> descriptions = result.all().get(30, TimeUnit.SECONDS);
             
             TopicDescription description = descriptions.get(topicName);

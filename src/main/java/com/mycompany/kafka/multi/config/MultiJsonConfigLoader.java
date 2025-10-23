@@ -45,6 +45,12 @@ public class MultiJsonConfigLoader {
                 NamedKafkaConfig brokerConfig = parseBrokerConfig(brokersNode);
                 configs.add(brokerConfig);
             }
+        } else if (config.isArray()) {
+            // Handle direct array format (empty array or array of brokers)
+            for (JsonNode brokerNode : config) {
+                NamedKafkaConfig brokerConfig = parseBrokerConfig(brokerNode);
+                configs.add(brokerConfig);
+            }
         } else {
             // Legacy format - single broker configuration
             NamedKafkaConfig brokerConfig = parseLegacyBrokerConfig(config);
@@ -80,6 +86,12 @@ public class MultiJsonConfigLoader {
             } else {
                 // Single schema registry configuration
                 NamedSchemaRegistryConfig registryConfig = parseSchemaRegistryConfig(registriesNode);
+                configs.add(registryConfig);
+            }
+        } else if (config.isArray()) {
+            // Handle direct array format (empty array or array of registries)
+            for (JsonNode registryNode : config) {
+                NamedSchemaRegistryConfig registryConfig = parseSchemaRegistryConfig(registryNode);
                 configs.add(registryConfig);
             }
         } else {
