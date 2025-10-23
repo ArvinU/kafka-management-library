@@ -23,6 +23,8 @@ A comprehensive Java library for managing Confluent Kafka brokers and Schema Reg
 - **Consumer Health Monitoring**: Monitor consumer group health and performance
 - **Auto-Register Schema**: Automatically register schemas when sending messages with schema support
 - **Schema ID Management**: Send messages with specific schema IDs for better performance
+- **Multi-Broker Support**: Manage multiple Kafka brokers and schema registries simultaneously
+- **Consistent API**: Multi* classes provide the same API as original classes with broker/registry parameters
 
 ### 🔧 Supported Operations
 

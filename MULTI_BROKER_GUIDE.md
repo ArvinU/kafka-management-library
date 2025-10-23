@@ -220,7 +220,7 @@ boolean isRegistryConnected = library.isSchemaRegistryConnected("registry-1");
 // Create topic on specific broker
 String brokerName = "broker-1";
 String topicName = "my-topic";
-boolean created = library.getMultiTopicManager().createTopic(brokerName, topicName, 3, (short) 1);
+library.getMultiTopicManager().createTopic(brokerName, topicName, 3, (short) 1);
 
 // Check if topic exists on specific broker
 boolean exists = library.getMultiTopicManager().topicExists(brokerName, topicName);
@@ -229,7 +229,12 @@ boolean exists = library.getMultiTopicManager().topicExists(brokerName, topicNam
 Set<String> topics = library.getMultiTopicManager().listTopics(brokerName);
 
 // Delete topic from specific broker
-boolean deleted = library.getMultiTopicManager().deleteTopic(brokerName, topicName);
+library.getMultiTopicManager().deleteTopic(brokerName, topicName);
+
+// Create different types of topics
+library.getMultiTopicTypeManager().createCompactedTopic(brokerName, "compacted-topic", 3, (short) 1);
+library.getMultiTopicTypeManager().createHighThroughputTopic(brokerName, "high-throughput-topic", 6, (short) 1);
+library.getMultiTopicTypeManager().createLowLatencyTopic(brokerName, "low-latency-topic", 3, (short) 1);
 ```
 
 ### Message Operations with Specific Brokers
@@ -241,12 +246,137 @@ String topicName = "my-topic";
 String key = "message-key";
 String value = "message-value";
 
-Future<RecordMetadata> future = library.getMultiMessageManager()
+// Basic message sending (consistent with original MessageManager API)
+Future<RecordMetadata> future = library.getMultiEnhancedMessageManager()
     .sendMessage(brokerName, topicName, key, value);
 
-// Send message without key
-Future<RecordMetadata> future2 = library.getMultiMessageManager()
+// Send message without key (overloaded method)
+Future<RecordMetadata> future2 = library.getMultiEnhancedMessageManager()
     .sendMessage(brokerName, topicName, value);
+
+// Send Avro message (consistent with original MessageManager API)
+Object avroObject = new User(123, "John Doe");
+Future<RecordMetadata> avroFuture = library.getMultiEnhancedMessageManager()
+    .sendAvroMessage(brokerName, topicName, key, avroObject);
+
+// Send JSON Schema message (consistent with original MessageManager API)
+Object jsonObject = new JsonObject();
+Future<RecordMetadata> jsonFuture = library.getMultiEnhancedMessageManager()
+    .sendJsonSchemaMessage(brokerName, topicName, key, jsonObject);
+
+// Send message with specific schema ID (enhanced functionality)
+int schemaId = 1;
+Future<RecordMetadata> schemaIdFuture = library.getMultiEnhancedMessageManager()
+    .sendMessageWithSchemaId(brokerName, topicName, key, value, schemaId);
+
+// Send message with auto schema registration (enhanced functionality)
+String subject = "user-value";
+String schema = "{\"type\":\"object\"}";
+Future<RecordMetadata> autoSchemaFuture = library.getMultiEnhancedMessageManager()
+    .sendMessageWithAutoSchema(brokerName, topicName, key, value, subject, schema);
+```
+
+### Consumer Group Operations with Specific Brokers
+
+```java
+// List consumer groups on specific broker
+String brokerName = "broker-1";
+List<String> consumerGroups = library.getMultiConsumerManager()
+    .listConsumerGroups(brokerName);
+
+// Describe consumer group on specific broker
+String groupId = "my-consumer-group";
+ConsumerGroupInfo groupInfo = library.getMultiConsumerManager()
+    .describeConsumerGroup(brokerName, groupId);
+
+// Delete consumer group on specific broker
+library.getMultiConsumerManager().deleteConsumerGroup(brokerName, groupId);
+
+// Get consumer group offsets on specific broker
+Map<TopicPartition, OffsetAndMetadata> offsets = library.getMultiConsumerManager()
+    .getConsumerGroupOffsets(brokerName, groupId);
+
+// Reset offsets to earliest on specific broker
+library.getMultiConsumerManager().resetConsumerGroupOffsetsToEarliest(brokerName, groupId, topicPartitions);
+
+// Reset offsets to latest on specific broker
+library.getMultiConsumerManager().resetConsumerGroupOffsetsToLatest(brokerName, groupId, topicPartitions);
+
+// Get consumer group lag on specific broker
+Map<TopicPartition, Long> lag = library.getMultiConsumerManager()
+    .getConsumerGroupLag(brokerName, groupId);
+
+// Check if consumer group exists on specific broker
+boolean exists = library.getMultiConsumerManager()
+    .consumerGroupExists(brokerName, groupId);
+```
+
+### Session Management with Specific Brokers
+
+```java
+// Create transactional producer on specific broker
+String brokerName = "broker-1";
+String transactionId = "tx-1";
+Producer<String, String> producer = library.getMultiSessionManager()
+    .createTransactionalProducer(brokerName, transactionId);
+
+// Create transactional consumer on specific broker
+String groupId = "transactional-group";
+Consumer<String, String> consumer = library.getMultiSessionManager()
+    .createTransactionalConsumer(brokerName, transactionId, groupId);
+
+// Begin transaction on specific broker
+library.getMultiSessionManager().beginTransaction(brokerName, transactionId);
+
+// Send transactional message on specific broker
+Future<RecordMetadata> future = library.getMultiSessionManager()
+    .sendTransactionalMessage(brokerName, transactionId, topicName, key, value);
+
+// Commit transaction on specific broker
+library.getMultiSessionManager().commitTransaction(brokerName, transactionId);
+
+// Abort transaction on specific broker
+library.getMultiSessionManager().abortTransaction(brokerName, transactionId);
+
+// Execute transaction with automatic cleanup (enhanced functionality)
+library.getMultiSessionManager().executeTransaction(brokerName, transactionId, groupId, (producer, consumer) -> {
+    // Transaction logic here
+    producer.send(new ProducerRecord<>(topicName, key, value));
+});
+
+// Check if transaction is active on specific broker
+boolean isActive = library.getMultiSessionManager()
+    .isTransactionActive(brokerName, transactionId);
+
+// Close transactional components on specific broker
+library.getMultiSessionManager().closeTransactionalProducer(brokerName, transactionId);
+library.getMultiSessionManager().closeTransactionalConsumer(brokerName, transactionId);
+
+// Close all sessions for specific broker
+library.getMultiSessionManager().closeAllForBroker(brokerName);
+```
+
+### Schema Registry Operations with Specific Registries
+
+```java
+// Register schema on specific schema registry
+String registryName = "registry-1";
+String subject = "user-value";
+String schema = "{\"type\":\"object\"}";
+int schemaId = library.getMultiSimpleSchemaManager()
+    .registerSchema(registryName, subject, schema);
+
+// Get schema by ID from specific schema registry
+String schemaById = library.getMultiSimpleSchemaManager()
+    .getSchemaById(registryName, schemaId);
+
+// List subjects on specific schema registry
+List<String> subjects = library.getMultiSimpleSchemaManager()
+    .listSubjects(registryName);
+
+// Check if subject exists on specific schema registry
+boolean subjectExists = library.getMultiSimpleSchemaManager()
+    .subjectExists(registryName, subject);
 ```
 
 ### Reconnection Support
@@ -378,14 +508,160 @@ MultiKafkaManagementLibrary library = new MultiKafkaManagementLibrary(brokers, r
 - Primary and secondary Schema Registry instances
 - Automatic switching during failures
 
+## Consistent API Patterns
+
+The Multi* classes provide the same API as the original manager classes, with the addition of broker/registry parameters:
+
+### **API Consistency Benefits**
+
+1. **Same Method Names**: Multi* classes use identical method names as original classes
+2. **Same Parameter Order**: Broker/registry ID is always the first parameter
+3. **Same Return Types**: Identical return types and behavior
+4. **Same Exception Handling**: All classes throw `KafkaManagementException` with proper error constants
+5. **Method Overloading**: Same overloaded methods for convenience
+
+### **Example: MessageManager vs MultiEnhancedMessageManager**
+
+```java
+// Original MessageManager
+messageManager.sendMessage(topicName, key, value);
+messageManager.sendMessage(topicName, value);  // Overloaded
+messageManager.sendAvroMessage(topicName, key, value);
+messageManager.sendJsonSchemaMessage(topicName, key, value);
+
+// MultiEnhancedMessageManager (same API + broker parameter)
+multiMessageManager.sendMessage(brokerId, topicName, key, value);
+multiMessageManager.sendMessage(brokerId, topicName, value);  // Overloaded
+multiMessageManager.sendAvroMessage(brokerId, topicName, key, value);
+multiMessageManager.sendJsonSchemaMessage(brokerId, topicName, key, value);
+```
+
+### **Enhanced Functionality**
+
+Multi* classes also provide enhanced functionality not available in original classes:
+
+```java
+// Enhanced message operations with schema support
+multiMessageManager.sendMessageWithSchemaId(brokerId, topicName, key, value, schemaId);
+multiMessageManager.sendMessageWithAutoSchema(brokerId, topicName, key, value, subject, schema);
+
+// Enhanced session management with automatic cleanup
+multiSessionManager.executeTransaction(brokerId, transactionId, groupId, (producer, consumer) -> {
+    // Transaction logic
+});
+
+// Enhanced topic management across multiple brokers
+multiTopicTypeManager.createTopicAcrossBrokers(brokerIds, topicName, partitions, replication, template, params);
+```
+
 ## Error Handling
 
-The library provides graceful error handling:
+The library provides comprehensive error handling with consistent patterns:
+
+### **Consistent Exception Handling**
+
+All Multi* classes throw `KafkaManagementException` with standardized error constants:
+
+```java
+try {
+    multiMessageManager.sendMessage(brokerId, topicName, key, value);
+} catch (KafkaManagementException e) {
+    // Consistent error handling across all Multi* classes
+    log.error("Failed to send message: {}", e.getMessage());
+    // Error code and message are standardized
+}
+```
+
+### **Error Constants**
+
+All classes use the same error constants from `ErrorConstants`:
+
+- **Message Operations**: `MESSAGE_SEND_FAILED`, `MESSAGE_CONSUME_FAILED`
+- **Consumer Operations**: `CONSUMER_GROUP_LIST_FAILED`, `CONSUMER_GROUP_DELETE_FAILED`
+- **Topic Operations**: `TOPIC_CREATION_FAILED`, `TOPIC_DELETION_FAILED`
+- **Transaction Operations**: `TRANSACTION_BEGIN_FAILED`, `TRANSACTION_COMMIT_FAILED`
+- **Schema Operations**: `SCHEMA_REGISTRATION_FAILED`, `SCHEMA_RETRIEVAL_FAILED`
+
+### **Connection Error Handling**
 
 1. **Connection Failures**: Failed connections are marked as disconnected but don't affect other connections
 2. **Reconnection**: Automatic reconnection support for failed brokers and registries
 3. **Status Monitoring**: Real-time connection status monitoring
 4. **Fallback**: Use first connected broker/registry when specific ones are unavailable
+5. **Graceful Degradation**: Operations continue with available connections
+
+## Testing with Multi* Classes
+
+The consistent API makes testing much easier and clearer:
+
+### **Test Helper Class**
+
+Use the `MultiManagerTestHelper` for convenient testing:
+
+```java
+import com.mycompany.kafka.multi.manager.MultiManagerTestHelper;
+
+// Create test helper
+MultiManagerTestHelper testHelper = new MultiManagerTestHelper(multiConnectionFactory);
+
+// Create test topics
+boolean success = testHelper.createTestTopic("broker-1", "test-topic");
+
+// Send test messages
+List<Future<RecordMetadata>> futures = testHelper.sendTestMessages("broker-1", "test-topic", 5);
+
+// Execute test transactions
+boolean txSuccess = testHelper.executeTestTransaction("broker-1", "tx-1", "group-1", "test-topic", 3);
+
+// Clean up test resources
+testHelper.cleanupTestResources("broker-1", Arrays.asList("test-topic"), Arrays.asList("group-1"));
+```
+
+### **Consistent Test Patterns**
+
+```java
+@Test
+void testMessageSendingConsistency() {
+    // Same API as original MessageManager, just with brokerId parameter
+    Future<RecordMetadata> future = multiMessageManager.sendMessage("broker-1", "topic", "key", "value");
+    assertNotNull(future);
+    
+    // Overloaded method works the same way
+    Future<RecordMetadata> future2 = multiMessageManager.sendMessage("broker-1", "topic", "value");
+    assertNotNull(future2);
+}
+
+@Test
+void testErrorHandlingConsistency() {
+    // Should throw KafkaManagementException (same as original managers)
+    assertThrows(KafkaManagementException.class, () -> {
+        multiMessageManager.sendMessage("invalid-broker", "topic", "key", "value");
+    });
+}
+```
+
+### **Multi-Broker Testing**
+
+```java
+@Test
+void testMultiBrokerOperations() {
+    List<String> brokerIds = Arrays.asList("broker-1", "broker-2", "broker-3");
+    
+    // Test creating topics across multiple brokers
+    multiTopicTypeManager.createTopicAcrossBrokers(brokerIds, "test-topic", 3, (short) 1, "HIGH_THROUGHPUT", new HashMap<>());
+    
+    // Test sending messages to multiple brokers
+    Map<String, String> brokerTopicMap = new HashMap<>();
+    brokerTopicMap.put("broker-1", "topic-1");
+    brokerTopicMap.put("broker-2", "topic-2");
+    
+    Map<String, List<Future<RecordMetadata>>> results = 
+        testHelper.sendTestMessagesToMultipleBrokers(brokerTopicMap, 5);
+    
+    assertNotNull(results);
+    assertEquals(2, results.size());
+}
+```
 
 ## Best Practices
 
@@ -394,17 +670,97 @@ The library provides graceful error handling:
 3. **Connection Monitoring**: Regularly monitor connection status
 4. **Error Handling**: Implement proper error handling and retry logic
 5. **Resource Cleanup**: Always close the library when done
+6. **API Consistency**: Use the same patterns as original classes for easier migration
+7. **Testing**: Use the test helper classes for consistent testing patterns
+8. **Exception Handling**: Always catch `KafkaManagementException` for proper error handling
 
 ## Migration from Single Broker
 
 To migrate from the single broker library:
 
-1. **Update imports**: Change from `com.mycompany.kafka` to `com.mycompany.kafka.multi`
-2. **Replace KafkaConfig** with `NamedKafkaConfig` (from `com.mycompany.kafka.multi.config`)
-3. **Replace SchemaRegistryConfig** with `NamedSchemaRegistryConfig` (from `com.mycompany.kafka.multi.config`)
-4. **Replace KafkaManagementLibrary** with `MultiKafkaManagementLibrary` (from `com.mycompany.kafka.multi`)
-5. **Update method calls** to include broker and registry names
-6. **Update configuration files** to use the new format and place them in `config/multi/` directory
+### **1. Update Imports**
+```java
+// Before
+import com.mycompany.kafka.KafkaManagementLibrary;
+import com.mycompany.kafka.manager.MessageManager;
+
+// After
+import com.mycompany.kafka.multi.MultiKafkaManagementLibrary;
+import com.mycompany.kafka.multi.manager.MultiEnhancedMessageManager;
+```
+
+### **2. Update Configuration Classes**
+```java
+// Before
+KafkaConfig kafkaConfig = new KafkaConfig("localhost:9092");
+SchemaRegistryConfig schemaConfig = new SchemaRegistryConfig("http://localhost:8081");
+
+// After
+NamedKafkaConfig kafkaConfig = new NamedKafkaConfig("broker-1", "localhost:9092");
+NamedSchemaRegistryConfig schemaConfig = new NamedSchemaRegistryConfig("registry-1", "http://localhost:8081");
+```
+
+### **3. Update Main Library Class**
+```java
+// Before
+KafkaManagementLibrary library = new KafkaManagementLibrary(kafkaConfig, schemaConfig);
+
+// After
+List<NamedKafkaConfig> brokers = Arrays.asList(kafkaConfig);
+List<NamedSchemaRegistryConfig> registries = Arrays.asList(schemaConfig);
+MultiKafkaManagementLibrary library = new MultiKafkaManagementLibrary(brokers, registries);
+```
+
+### **4. Update Method Calls (Minimal Changes)**
+The API is consistent, so you only need to add broker/registry parameters:
+
+```java
+// Before
+messageManager.sendMessage(topicName, key, value);
+topicManager.createTopic(topicName, partitions, replication);
+consumerManager.listConsumerGroups();
+
+// After (just add broker parameter)
+multiMessageManager.sendMessage("broker-1", topicName, key, value);
+multiTopicManager.createTopic("broker-1", topicName, partitions, replication);
+multiConsumerManager.listConsumerGroups("broker-1");
+```
+
+### **5. Exception Handling (No Changes Needed)**
+Exception handling remains the same:
+
+```java
+try {
+    multiMessageManager.sendMessage("broker-1", topicName, key, value);
+} catch (KafkaManagementException e) {
+    // Same exception handling as before
+    log.error("Failed to send message: {}", e.getMessage());
+}
+```
+
+### **6. Configuration Files**
+Update configuration files to use the new format and place them in `config/multi/` directory:
+
+```json
+// config/multi/multi-kafka-config.json
+{
+  "brokers": [
+    {
+      "name": "broker-1",
+      "bootstrapServers": "localhost:9092"
+    }
+  ]
+}
+```
+
+### **Migration Benefits**
+
+1. **Minimal Code Changes**: Only need to add broker/registry parameters
+2. **Same Method Names**: All method names remain identical
+3. **Same Return Types**: All return types remain the same
+4. **Same Exception Handling**: Exception handling patterns remain identical
+5. **Enhanced Functionality**: Gain access to multi-broker features
+6. **Backward Compatibility**: Original classes still work for single-broker scenarios
 
 ## Error Handling
 
