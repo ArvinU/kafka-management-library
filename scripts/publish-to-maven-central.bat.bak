@@ -1,0 +1,83 @@
+@echo off
+REM Script to publish Kafka Management Library to Maven Central
+REM Usage: scripts\publish-to-maven-central.bat [version]
+
+setlocal enabledelayedexpansion
+
+set VERSION=%1
+if "%VERSION%"=="" set VERSION=1.0.1
+echo Publishing version: %VERSION%
+
+REM Check if required environment variables are set
+if "%OSSRH_USERNAME%"=="" (
+    echo Error: OSSRH_USERNAME environment variable must be set
+    echo Set it in your ~/.m2/settings.xml or export it:
+    echo set OSSRH_USERNAME=your-username
+    exit /b 1
+)
+
+if "%OSSRH_TOKEN%"=="" (
+    echo Error: OSSRH_TOKEN environment variable must be set
+    echo Set it in your ~/.m2/settings.xml or export it:
+    echo set OSSRH_TOKEN=your-token
+    exit /b 1
+)
+
+REM Check if GPG is configured
+gpg --version >nul 2>&1
+if errorlevel 1 (
+    echo Error: GPG is not installed. Please install GPG first.
+    exit /b 1
+)
+
+REM Verify GPG key is available
+gpg --list-secret-keys --keyid-format LONG | findstr "sec" >nul
+if errorlevel 1 (
+    echo Error: No GPG secret keys found. Please import your GPG key first.
+    echo gpg --import your-private-key.asc
+    exit /b 1
+)
+
+echo Starting Maven Central publishing process...
+
+REM Clean and compile
+echo 1. Cleaning and compiling...
+call mvn clean compile
+if errorlevel 1 exit /b 1
+
+REM Run tests
+echo 2. Running tests...
+call mvn test
+if errorlevel 1 exit /b 1
+
+REM Generate sources and javadoc
+echo 3. Generating sources and javadoc...
+call mvn source:jar javadoc:jar
+if errorlevel 1 exit /b 1
+
+REM Deploy to staging repository
+echo 4. Deploying to Sonatype staging repository...
+call mvn clean deploy -P release
+if errorlevel 1 exit /b 1
+
+echo.
+echo ✅ Deployment completed successfully!
+echo.
+echo Next steps:
+echo 1. Go to https://s01.oss.sonatype.org/
+echo 2. Login with your Sonatype credentials
+echo 3. Navigate to 'Staging Repositories'
+echo 4. Find your repository (iogithubarvinu-XXXX)
+echo 5. Select it and click 'Close'
+echo 6. Once closed successfully, click 'Release'
+echo 7. Confirm the release
+echo.
+echo After release, your artifacts will be available at:
+echo https://repo1.maven.org/maven2/io/github/arvinu/kafka-management-library/
+echo.
+echo Users can then add your library to their pom.xml:
+echo ^<dependency^>
+echo     ^<groupId^>io.github.arvinu^</groupId^>
+echo     ^<artifactId^>kafka-management-library^</artifactId^>
+echo     ^<version^>%VERSION%^</version^>
+echo ^</dependency^>
