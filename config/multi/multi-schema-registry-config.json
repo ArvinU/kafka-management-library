@@ -1,0 +1,43 @@
+{
+  "schemaRegistries": [
+    {
+      "name": "registry-1",
+      "schemaRegistryUrl": "https://localhost:8081",
+      "securityProtocol": "SSL",
+      "cacheCapacity": 100,
+      "requestTimeoutMs": 30000,
+      "retries": 3,
+      "sslTruststoreLocation": "/path/to/truststore.jks",
+      "sslTruststorePassword": "truststore-password",
+      "sslKeystoreLocation": "/path/to/keystore.jks",
+      "sslKeystorePassword": "keystore-password",
+      "sslKeyPassword": "key-password"
+    },
+    {
+      "name": "registry-2",
+      "schemaRegistryUrl": "https://localhost:8082",
+      "securityProtocol": "SSL",
+      "cacheCapacity": 100,
+      "requestTimeoutMs": 30000,
+      "retries": 3,
+      "sslTruststoreLocation": "/path/to/truststore.jks",
+      "sslTruststorePassword": "truststore-password",
+      "sslKeystoreLocation": "/path/to/keystore.jks",
+      "sslKeystorePassword": "keystore-password",
+      "sslKeyPassword": "key-password"
+    },
+    {
+      "name": "registry-3",
+      "schemaRegistryUrl": "https://localhost:8083",
+      "securityProtocol": "SSL",
+      "cacheCapacity": 100,
+      "requestTimeoutMs": 30000,
+      "retries": 3,
+      "sslTruststoreLocation": "/path/to/truststore.jks",
+      "sslTruststorePassword": "truststore-password",
+      "sslKeystoreLocation": "/path/to/keystore.jks",
+      "sslKeystorePassword": "keystore-password",
+      "sslKeyPassword": "key-password"
+    }
+  ]
+}

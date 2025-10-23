@@ -1,0 +1,49 @@
+{
+  "brokers": [
+    {
+      "name": "broker-1",
+      "bootstrapServers": "localhost:9092",
+      "securityProtocol": "SSL",
+      "clientId": "kafka-management-library-broker-1",
+      "requestTimeoutMs": 30000,
+      "retries": 3,
+      "enableAutoCommit": true,
+      "autoOffsetReset": "latest",
+      "sslTruststoreLocation": "/path/to/truststore.jks",
+      "sslTruststorePassword": "truststore-password",
+      "sslKeystoreLocation": "/path/to/keystore.jks",
+      "sslKeystorePassword": "keystore-password",
+      "́sslKeyPassword": "key-password"
+    },
+    {
+      "name": "broker-2",
+      "bootstrapServers": "localhost:9093",
+      "securityProtocol": "SSL",
+      "clientId": "kafka-management-library-broker-2",
+      "requestTimeoutMs": 30000,
+      "retries": 3,
+      "enableAutoCommit": true,
+      "autoOffsetReset": "latest",
+      "sslTruststoreLocation": "/path/to/truststore.jks",
+      "sslTruststorePassword": "truststore-password",
+      "sslKeystoreLocation": "/path/to/keystore.jks",
+      "sslKeystorePassword": "keystore-password",
+      "sslKeyPassword": "key-password"
+    },
+    {
+      "name": "broker-3",
+      "bootstrapServers": "localhost:9094",
+      "securityProtocol": "SSL",
+      "clientId": "kafka-management-library-broker-3",
+      "requestTimeoutMs": 30000,
+      "retries": 3,
+      "enableAutoCommit": true,
+      "autoOffsetReset": "latest",
+      "sslTruststoreLocation": "/path/to/truststore.jks",
+      "sslTruststorePassword": "truststore-password",
+      "sslKeystoreLocation": "/path/to/keystore.jks",
+      "sslKeystorePassword": "keystore-password",
+      "sslKeyPassword": "key-password"
+    }
+  ]
+}
