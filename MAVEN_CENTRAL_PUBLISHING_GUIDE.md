@@ -6,7 +6,7 @@ This guide explains how to publish the Kafka Management Library to Maven Central
 
 ### 1. Sonatype OSSRH Account
 1. Create an account at [Sonatype OSSRH](https://s01.oss.sonatype.org/)
-2. Create a JIRA ticket to request namespace approval for `io.github.arvinubhi`
+2. Create a JIRA ticket to request namespace approval for `io.github.arvinu`
 3. Wait for approval (usually within 24-48 hours)
 
 ### 2. GPG Key Setup
@@ -117,7 +117,7 @@ mvn clean deploy -P release -DskipTests
 
 2. **Navigate to Staging Repositories**:
    - Click "Staging Repositories" in the left menu
-   - Find your repository (usually named `iogithubarvinubhi-XXXX`)
+   - Find your repository (usually named `iogithubarvinu-XXXX`)
 
 3. **Close and Release**:
    - Select your repository
@@ -128,8 +128,8 @@ mvn clean deploy -P release -DskipTests
 ### 4. Verify Release
 
 After release, your artifacts will be available at:
-- **Maven Central**: https://repo1.maven.org/maven2/io/github/arvinubhi/kafka-management-library/
-- **Search**: https://search.maven.org/artifact/io.github.arvinubhi/kafka-management-library
+- **Maven Central**: https://repo1.maven.org/maven2/io/github/arvinu/kafka-management-library/
+- **Search**: https://search.maven.org/artifact/io.github.arvinu/kafka-management-library
 
 ## Usage in Other Projects
 
@@ -137,7 +137,7 @@ Once published, other projects can use your library by adding it to their `pom.x
 
 ```xml
 <dependency>
-    <groupId>io.github.arvinubhi</groupId>
+    <groupId>io.github.arvinu</groupId>
     <artifactId>kafka-management-library</artifactId>
     <version>1.0.0</version>
 </dependency>

@@ -5,7 +5,7 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.arvinubhi</groupId>
+    <groupId>io.github.arvinu</groupId>
     <artifactId>kafka-management-library</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
@@ -24,9 +24,9 @@
     
     <developers>
         <developer>
-            <id>arvinubhi</id>
-            <name>Arvin Ubhi</name>
-            <email>arvinubhi@example.com</email>
+            <id>arvinu</id>
+            <name>Arvin U</name>
+            <email>arvinu@example.com</email>
             <url>https://github.com/ArvinU</url>
         </developer>
     </developers>

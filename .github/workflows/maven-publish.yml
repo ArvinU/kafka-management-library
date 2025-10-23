@@ -51,4 +51,4 @@ jobs:
         echo "Deployment completed successfully!"
         echo "Check Sonatype Nexus: https://s01.oss.sonatype.org/"
         echo "Once released, artifacts will be available at:"
-        echo "https://repo1.maven.org/maven2/io/github/arvinubhi/kafka-management-library/"
+        echo "https://repo1.maven.org/maven2/io/github/arvinu/kafka-management-library/"

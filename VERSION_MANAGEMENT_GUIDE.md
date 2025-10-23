@@ -263,7 +263,7 @@ jobs:
           
           ```xml
           <dependency>
-              <groupId>io.github.arvinubhi</groupId>
+              <groupId>io.github.arvinu</groupId>
               <artifactId>kafka-management-library</artifactId>
               <version>${{ steps.version.outputs.VERSION }}</version>
           </dependency>

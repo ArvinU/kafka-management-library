@@ -1059,7 +1059,7 @@ The library is published to Maven Central and can be used in your projects by ad
 
 ```xml
 <dependency>
-    <groupId>io.github.arvinubhi</groupId>
+    <groupId>io.github.arvinu</groupId>
     <artifactId>kafka-management-library</artifactId>
     <version>1.0.0</version>
 </dependency>
@@ -1070,7 +1070,7 @@ The library is published to Maven Central and can be used in your projects by ad
 For Gradle projects, add to your `build.gradle`:
 
 ```gradle
-implementation 'io.github.arvinubhi:kafka-management-library:1.0.0'
+implementation 'io.github.arvinu:kafka-management-library:1.0.0'
 ```
 
 ### Maven Central Publishing
