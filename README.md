@@ -1053,6 +1053,30 @@ The Multi-Broker CLI uses JSON configuration files for both Kafka brokers and Sc
 
 For detailed documentation, see [MULTI_CLI_GUIDE.md](MULTI_CLI_GUIDE.md) and [SCRIPTS_GUIDE.md](SCRIPTS_GUIDE.md).
 
+## Maven Central
+
+The library is published to Maven Central and can be used in your projects by adding the following dependency to your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>io.github.arvinubhi</groupId>
+    <artifactId>kafka-management-library</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+### Gradle
+
+For Gradle projects, add to your `build.gradle`:
+
+```gradle
+implementation 'io.github.arvinubhi:kafka-management-library:1.0.0'
+```
+
+### Maven Central Publishing
+
+For information about publishing to Maven Central, see [MAVEN_CENTRAL_PUBLISHING_GUIDE.md](MAVEN_CENTRAL_PUBLISHING_GUIDE.md).
+
 ## Requirements
 
 - Java 1.8 or higher
