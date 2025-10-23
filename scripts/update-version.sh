@@ -37,25 +37,25 @@ fi
 
 # Update documentation
 echo "3. Updating documentation..."
-if [ -f "README.md" ]; then
-    sed -i.bak "s/version>$CURRENT_VERSION</version>${VERSION}</g" README.md
-    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" README.md
-    echo "  - Updated README.md"
+if [ -f "docs/README.md" ]; then
+    sed -i.bak "s/version>$CURRENT_VERSION</version>${VERSION}</g" docs/README.md
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" docs/README.md
+    echo "  - Updated docs/README.md"
 fi
 
-if [ -f "MAVEN_CENTRAL_PUBLISHING_GUIDE.md" ]; then
-    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" MAVEN_CENTRAL_PUBLISHING_GUIDE.md
-    echo "  - Updated MAVEN_CENTRAL_PUBLISHING_GUIDE.md"
+if [ -f "docs/MAVEN_CENTRAL_PUBLISHING_GUIDE.md" ]; then
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" docs/MAVEN_CENTRAL_PUBLISHING_GUIDE.md
+    echo "  - Updated docs/MAVEN_CENTRAL_PUBLISHING_GUIDE.md"
 fi
 
-if [ -f "SCRIPTS_GUIDE.md" ]; then
-    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" SCRIPTS_GUIDE.md
-    echo "  - Updated SCRIPTS_GUIDE.md"
+if [ -f "docs/SCRIPTS_GUIDE.md" ]; then
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" docs/SCRIPTS_GUIDE.md
+    echo "  - Updated docs/SCRIPTS_GUIDE.md"
 fi
 
-if [ -f "MULTI_CLI_GUIDE.md" ]; then
-    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" MULTI_CLI_GUIDE.md
-    echo "  - Updated MULTI_CLI_GUIDE.md"
+if [ -f "docs/MULTI_CLI_GUIDE.md" ]; then
+    sed -i.bak "s/${CURRENT_VERSION}/${VERSION}/g" docs/MULTI_CLI_GUIDE.md
+    echo "  - Updated docs/MULTI_CLI_GUIDE.md"
 fi
 
 # Update publish scripts

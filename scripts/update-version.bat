@@ -37,25 +37,25 @@ if exist "scripts\run-cli.bat" (
 
 REM Update documentation
 echo 3. Updating documentation...
-if exist "README.md" (
-    powershell -Command "(Get-Content 'README.md') -replace 'version^>!CURRENT_VERSION!^<', 'version^>%VERSION%^<' | Set-Content 'README.md'"
-    powershell -Command "(Get-Content 'README.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'README.md'"
-    echo   - Updated README.md
+if exist "docs\README.md" (
+    powershell -Command "(Get-Content 'docs\README.md') -replace 'version^>!CURRENT_VERSION!^<', 'version^>%VERSION%^<' | Set-Content 'docs\README.md'"
+    powershell -Command "(Get-Content 'docs\README.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'docs\README.md'"
+    echo   - Updated docs\README.md
 )
 
-if exist "MAVEN_CENTRAL_PUBLISHING_GUIDE.md" (
-    powershell -Command "(Get-Content 'MAVEN_CENTRAL_PUBLISHING_GUIDE.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'MAVEN_CENTRAL_PUBLISHING_GUIDE.md'"
-    echo   - Updated MAVEN_CENTRAL_PUBLISHING_GUIDE.md
+if exist "docs\MAVEN_CENTRAL_PUBLISHING_GUIDE.md" (
+    powershell -Command "(Get-Content 'docs\MAVEN_CENTRAL_PUBLISHING_GUIDE.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'docs\MAVEN_CENTRAL_PUBLISHING_GUIDE.md'"
+    echo   - Updated docs\MAVEN_CENTRAL_PUBLISHING_GUIDE.md
 )
 
-if exist "SCRIPTS_GUIDE.md" (
-    powershell -Command "(Get-Content 'SCRIPTS_GUIDE.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'SCRIPTS_GUIDE.md'"
-    echo   - Updated SCRIPTS_GUIDE.md
+if exist "docs\SCRIPTS_GUIDE.md" (
+    powershell -Command "(Get-Content 'docs\SCRIPTS_GUIDE.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'docs\SCRIPTS_GUIDE.md'"
+    echo   - Updated docs\SCRIPTS_GUIDE.md
 )
 
-if exist "MULTI_CLI_GUIDE.md" (
-    powershell -Command "(Get-Content 'MULTI_CLI_GUIDE.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'MULTI_CLI_GUIDE.md'"
-    echo   - Updated MULTI_CLI_GUIDE.md
+if exist "docs\MULTI_CLI_GUIDE.md" (
+    powershell -Command "(Get-Content 'docs\MULTI_CLI_GUIDE.md') -replace '!CURRENT_VERSION!', '%VERSION%' | Set-Content 'docs\MULTI_CLI_GUIDE.md'"
+    echo   - Updated docs\MULTI_CLI_GUIDE.md
 )
 
 REM Update publish scripts

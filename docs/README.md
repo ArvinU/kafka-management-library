@@ -1051,7 +1051,7 @@ The Multi-Broker CLI uses JSON configuration files for both Kafka brokers and Sc
 }
 ```
 
-For detailed documentation, see [MULTI_CLI_GUIDE.md](MULTI_CLI_GUIDE.md) and [SCRIPTS_GUIDE.md](SCRIPTS_GUIDE.md).
+For detailed documentation, see [docs/MULTI_CLI_GUIDE.md](docs/MULTI_CLI_GUIDE.md) and [docs/SCRIPTS_GUIDE.md](docs/SCRIPTS_GUIDE.md).
 
 ## Maven Central
 
@@ -1070,12 +1070,12 @@ The library is published to Maven Central and can be used in your projects by ad
 For Gradle projects, add to your `build.gradle`:
 
 ```gradle
-implementation 'io.github.arvinu:kafka-management-library:1.0.2'
+implementation 'io.github.arvinu:kafka-management-library:1.1.0'
 ```
 
 ### Maven Central Publishing
 
-For information about publishing to Maven Central, see [MAVEN_CENTRAL_PUBLISHING_GUIDE.md](MAVEN_CENTRAL_PUBLISHING_GUIDE.md).
+For information about publishing to Maven Central, see [docs/MAVEN_CENTRAL_PUBLISHING_GUIDE.md](docs/MAVEN_CENTRAL_PUBLISHING_GUIDE.md).
 
 ## Requirements
 
