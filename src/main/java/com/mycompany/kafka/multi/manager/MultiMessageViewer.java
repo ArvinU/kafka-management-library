@@ -1,6 +1,6 @@
 package com.mycompany.kafka.multi.manager;
 
-import com.mycompany.kafka.factory.MultiConnectionFactory;
+import com.mycompany.kafka.multi.factory.MultiConnectionFactory;
 
 /**
  * Enhanced Message Viewer for multiple brokers.

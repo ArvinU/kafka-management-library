@@ -3,7 +3,6 @@ package com.mycompany.kafka.multi.example;
 import com.mycompany.kafka.multi.MultiKafkaManagementLibrary;
 import com.mycompany.kafka.multi.config.NamedKafkaConfig;
 import com.mycompany.kafka.multi.config.NamedSchemaRegistryConfig;
-import com.mycompany.kafka.exception.KafkaManagementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

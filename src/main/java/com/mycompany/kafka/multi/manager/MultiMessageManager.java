@@ -2,7 +2,7 @@ package com.mycompany.kafka.multi.manager;
 
 import com.mycompany.kafka.constants.ErrorConstants;
 import com.mycompany.kafka.exception.KafkaManagementException;
-import com.mycompany.kafka.factory.MultiConnectionFactory;
+import com.mycompany.kafka.multi.factory.MultiConnectionFactory;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -64,7 +64,7 @@ public class MultiMessageManager {
      * @return Future containing RecordMetadata
      * @throws KafkaManagementException if message sending fails
      */
-    public Future<RecordMetadata> sendMessage(String brokerName, String topicName, String value) throws KafkaManagementException {
+    public Future<RecordMetadata> sendMessageWithoutKey(String brokerName, String topicName, String value) throws KafkaManagementException {
         return sendMessage(brokerName, topicName, null, value);
     }
     
@@ -96,7 +96,7 @@ public class MultiMessageManager {
      * @return Future containing RecordMetadata
      * @throws KafkaManagementException if message sending fails
      */
-    public Future<RecordMetadata> sendMessage(String topicName, String value) throws KafkaManagementException {
+    public Future<RecordMetadata> sendMessageWithoutKey(String topicName, String value) throws KafkaManagementException {
         return sendMessage(topicName, null, value);
     }
 }

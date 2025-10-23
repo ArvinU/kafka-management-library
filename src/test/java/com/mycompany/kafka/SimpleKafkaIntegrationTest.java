@@ -2,20 +2,11 @@ package com.mycompany.kafka;
 
 import com.mycompany.kafka.config.KafkaConfig;
 import com.mycompany.kafka.config.SchemaRegistryConfig;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -113,7 +104,7 @@ public class SimpleKafkaIntegrationTest {
             
             // Test topic info (using topicManager directly)
             try {
-                Object topicInfo = library.getTopicManager().getTopicInfo(testTopic);
+                Object topicInfo = library.getTopicManager().describeTopic(testTopic);
                 log.info("Topic info: {}", topicInfo);
             } catch (Exception e) {
                 log.warn("Topic info retrieval failed: {}", e.getMessage());
@@ -158,79 +149,6 @@ public class SimpleKafkaIntegrationTest {
         assertTrue(messageFound, "Should have found the sent message");
     }
     
-    private void testDirectKafkaClients() throws Exception {
-        log.info("Testing with direct Kafka clients");
-        
-        // Skip direct client testing when no broker is available
-        // This prevents hanging on AdminClient creation
-        log.info("Skipping direct Kafka client operations (no broker available)");
-        log.info("Direct client testing would include:");
-        log.info("  - Topic creation and deletion");
-        log.info("  - Message publishing and consumption");
-        log.info("  - Admin operations");
-    }
-    
-    private void testDirectMessageOperations(String topicName) throws Exception {
-        log.info("Testing direct message operations with topic: {}", topicName);
-        
-        String[] testMessages = {
-            "Hello Direct Kafka!",
-            "Test message 1",
-            "Test message 2",
-            "Final test message"
-        };
-        
-        // Publish messages
-        Properties producerProps = new Properties();
-        producerProps.put("bootstrap.servers", KAFKA_BOOTSTRAP_SERVERS);
-        producerProps.put("key.serializer", StringSerializer.class.getName());
-        producerProps.put("value.serializer", StringSerializer.class.getName());
-        producerProps.put("client.id", "test-producer");
-        producerProps.put("acks", "all");
-        producerProps.put("retries", "3");
-        
-        try (KafkaProducer<String, String> producer = new KafkaProducer<>(producerProps)) {
-            for (int i = 0; i < testMessages.length; i++) {
-                ProducerRecord<String, String> record = 
-                    new ProducerRecord<>(topicName, "key-" + i, testMessages[i]);
-                producer.send(record);
-                log.info("Published: {} -> {}", "key-" + i, testMessages[i]);
-            }
-            producer.flush();
-        }
-        
-        Thread.sleep(2000);
-        
-        // Consume messages
-        Properties consumerProps = new Properties();
-        consumerProps.put("bootstrap.servers", KAFKA_BOOTSTRAP_SERVERS);
-        consumerProps.put("group.id", "test-group-" + System.currentTimeMillis());
-        consumerProps.put("key.deserializer", StringDeserializer.class.getName());
-        consumerProps.put("value.deserializer", StringDeserializer.class.getName());
-        consumerProps.put("auto.offset.reset", "earliest");
-        consumerProps.put("enable.auto.commit", "true");
-        consumerProps.put("client.id", "test-consumer");
-        
-        List<String> consumedMessages = new ArrayList<>();
-        
-        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerProps)) {
-            consumer.subscribe(Collections.singletonList(topicName));
-            
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(10));
-            for (ConsumerRecord<String, String> record : records) {
-                consumedMessages.add(record.value());
-                log.info("Consumed: {} -> {}", record.key(), record.value());
-            }
-        }
-        
-        // Verify consumption
-        assertEquals(testMessages.length, consumedMessages.size(), "Should consume all published messages");
-        for (String message : testMessages) {
-            assertTrue(consumedMessages.contains(message), "Should have consumed: " + message);
-        }
-        
-        log.info("Direct message operations completed successfully");
-    }
     
     @Test
     @Timeout(value = 10, unit = TimeUnit.SECONDS)
