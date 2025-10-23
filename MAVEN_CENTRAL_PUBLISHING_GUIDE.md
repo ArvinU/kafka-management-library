@@ -53,10 +53,10 @@ Create or update `~/.m2/settings.xml`:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.1"
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.1 
-          http://maven.apache.org/xsd/settings-1.0.1.xsd">
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 
+          http://maven.apache.org/xsd/settings-1.1.0.xsd">
     
     <servers>
         <server>
@@ -87,7 +87,7 @@ Create or update `~/.m2/settings.xml`:
 
 ```bash
 # Update version in pom.xml (if needed)
-# Current version: 1.0.1
+# Current version: 1.1.0
 
 # Clean and compile
 mvn clean compile
@@ -139,7 +139,7 @@ Once published, other projects can use your library by adding it to their `pom.x
 <dependency>
     <groupId>io.github.arvinu</groupId>
     <artifactId>kafka-management-library</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -240,7 +240,7 @@ mvn clean package
 mvn clean source:jar javadoc:jar package
 
 # Verify GPG signature
-gpg --verify target/kafka-management-library-1.0.1.jar.asc
+gpg --verify target/kafka-management-library-1.1.0.jar.asc
 ```
 
 ## Version Management
@@ -256,22 +256,22 @@ Follow semantic versioning (MAJOR.MINOR.PATCH):
 
 1. **Update version in `pom.xml`**:
    ```xml
-   <version>1.0.1</version>
+   <version>1.1.0</version>
    ```
 
 2. **Update version in scripts** (if needed):
    ```bash
    # Update version references in scripts
-   sed -i 's/1.0.1/1.0.1/g' scripts/run-cli.sh
-   sed -i 's/1.0.1/1.0.1/g' scripts/run-cli.bat
+   sed -i 's/1.1.0/1.1.0/g' scripts/run-cli.sh
+   sed -i 's/1.1.0/1.1.0/g' scripts/run-cli.bat
    ```
 
 3. **Commit and tag**:
    ```bash
    git add .
-   git commit -m "Release version 1.0.1"
-   git tag v1.0.1
-   git push origin v1.0.1
+   git commit -m "Release version 1.1.0"
+   git tag v1.1.0
+   git push origin v1.1.0
    ```
 
 ## Best Practices

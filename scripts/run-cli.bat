@@ -10,13 +10,13 @@ REM   run-cli.bat --generate-multi-configs                                      
 REM Check for special commands
 if "%1"=="--generate-configs" (
     echo Generating sample single-broker configuration files...
-    java -cp "target\kafka-management-library-1.0.1.jar;target\lib\*" com.mycompany.kafka.cli.KafkaCLI --generate-configs
+    java -cp "target\kafka-management-library-1.1.0.jar;target\lib\*" com.mycompany.kafka.cli.KafkaCLI --generate-configs
     exit /b 0
 )
 
 if "%1"=="--generate-multi-configs" (
     echo Generating sample multi-broker configuration files...
-    java -cp "target\kafka-management-library-1.0.1.jar;target\lib\*" com.mycompany.kafka.multi.cli.MultiKafkaCLI --generate-configs
+    java -cp "target\kafka-management-library-1.1.0.jar;target\lib\*" com.mycompany.kafka.multi.cli.MultiKafkaCLI --generate-configs
     exit /b 0
 )
 
@@ -31,7 +31,7 @@ if "%1"=="--multi" (
     set COMMAND=%4
     
     REM Build the project if needed
-    if not exist "target\kafka-management-library-1.0.1.jar" (
+    if not exist "target\kafka-management-library-1.1.0.jar" (
         echo Building the project...
         mvn clean package -DskipTests
     )
@@ -39,10 +39,10 @@ if "%1"=="--multi" (
     REM Run the Multi-Broker CLI
     if not "%COMMAND%"=="" (
         echo Running Multi-Broker CLI in non-interactive mode with command: %COMMAND%
-        java -cp "target\kafka-management-library-1.0.1.jar;target\lib\*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "%MULTI_KAFKA_CONFIG%" "%MULTI_SCHEMA_REGISTRY_CONFIG%" "%COMMAND%"
+        java -cp "target\kafka-management-library-1.1.0.jar;target\lib\*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "%MULTI_KAFKA_CONFIG%" "%MULTI_SCHEMA_REGISTRY_CONFIG%" "%COMMAND%"
     ) else (
         echo Running Multi-Broker CLI in interactive mode
-        java -cp "target\kafka-management-library-1.0.1.jar;target\lib\*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "%MULTI_KAFKA_CONFIG%" "%MULTI_SCHEMA_REGISTRY_CONFIG%"
+        java -cp "target\kafka-management-library-1.1.0.jar;target\lib\*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "%MULTI_KAFKA_CONFIG%" "%MULTI_SCHEMA_REGISTRY_CONFIG%"
     )
     exit /b 0
 )
@@ -58,7 +58,7 @@ if "%SCHEMA_REGISTRY_URL%"=="" set SCHEMA_REGISTRY_URL=http://localhost:8081
 set COMMAND=%3
 
 REM Build the project if needed
-if not exist "target\kafka-management-library-1.0.1.jar" (
+if not exist "target\kafka-management-library-1.1.0.jar" (
     echo Building the project...
     mvn clean package -DskipTests
 )
@@ -66,8 +66,8 @@ if not exist "target\kafka-management-library-1.0.1.jar" (
 REM Run the Single-Broker CLI
 if not "%COMMAND%"=="" (
     echo Running Single-Broker CLI in non-interactive mode with command: %COMMAND%
-    java -cp "target\kafka-management-library-1.0.1.jar;target\lib\*" com.mycompany.kafka.cli.KafkaCLI "%BOOTSTRAP_SERVERS%" "%SCHEMA_REGISTRY_URL%" "%COMMAND%"
+    java -cp "target\kafka-management-library-1.1.0.jar;target\lib\*" com.mycompany.kafka.cli.KafkaCLI "%BOOTSTRAP_SERVERS%" "%SCHEMA_REGISTRY_URL%" "%COMMAND%"
 ) else (
     echo Running Single-Broker CLI in interactive mode
-    java -cp "target\kafka-management-library-1.0.1.jar;target\lib\*" com.mycompany.kafka.cli.KafkaCLI "%BOOTSTRAP_SERVERS%" "%SCHEMA_REGISTRY_URL%"
+    java -cp "target\kafka-management-library-1.1.0.jar;target\lib\*" com.mycompany.kafka.cli.KafkaCLI "%BOOTSTRAP_SERVERS%" "%SCHEMA_REGISTRY_URL%"
 )

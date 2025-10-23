@@ -11,13 +11,13 @@
 # Check for special commands
 if [ "$1" = "--generate-configs" ]; then
     echo "Generating sample single-broker configuration files..."
-    java -cp "target/kafka-management-library-1.0.1.jar:target/lib/*" com.mycompany.kafka.cli.KafkaCLI --generate-configs
+    java -cp "target/kafka-management-library-1.0.2.jar:target/lib/*" com.mycompany.kafka.cli.KafkaCLI --generate-configs
     exit 0
 fi
 
 if [ "$1" = "--generate-multi-configs" ]; then
     echo "Generating sample multi-broker configuration files..."
-    java -cp "target/kafka-management-library-1.0.1.jar:target/lib/*" com.mycompany.kafka.multi.cli.MultiKafkaCLI --generate-configs
+    java -cp "target/kafka-management-library-1.0.2.jar:target/lib/*" com.mycompany.kafka.multi.cli.MultiKafkaCLI --generate-configs
     exit 0
 fi
 
@@ -28,7 +28,7 @@ if [ "$1" = "--multi" ]; then
     COMMAND=${4:-""}
     
     # Build the project if needed
-    if [ ! -f "target/kafka-management-library-1.0.1.jar" ]; then
+    if [ ! -f "target/kafka-management-library-1.0.2.jar" ]; then
         echo "Building the project..."
         mvn clean package -DskipTests
     fi
@@ -36,10 +36,10 @@ if [ "$1" = "--multi" ]; then
     # Run the Multi-Broker CLI
     if [ -n "$COMMAND" ]; then
         echo "Running Multi-Broker CLI in non-interactive mode with command: $COMMAND"
-        java -cp "target/kafka-management-library-1.0.1.jar:target/lib/*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "$MULTI_KAFKA_CONFIG" "$MULTI_SCHEMA_REGISTRY_CONFIG" "$COMMAND"
+        java -cp "target/kafka-management-library-1.0.2.jar:target/lib/*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "$MULTI_KAFKA_CONFIG" "$MULTI_SCHEMA_REGISTRY_CONFIG" "$COMMAND"
     else
         echo "Running Multi-Broker CLI in interactive mode"
-        java -cp "target/kafka-management-library-1.0.1.jar:target/lib/*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "$MULTI_KAFKA_CONFIG" "$MULTI_SCHEMA_REGISTRY_CONFIG"
+        java -cp "target/kafka-management-library-1.0.2.jar:target/lib/*" com.mycompany.kafka.multi.cli.MultiKafkaCLI "$MULTI_KAFKA_CONFIG" "$MULTI_SCHEMA_REGISTRY_CONFIG"
     fi
     exit 0
 fi
@@ -51,7 +51,7 @@ SCHEMA_REGISTRY_URL=${2:-"http://localhost:8081"}
 COMMAND=${3:-""}
 
 # Build the project if needed
-if [ ! -f "target/kafka-management-library-1.0.1.jar" ]; then
+if [ ! -f "target/kafka-management-library-1.0.2.jar" ]; then
     echo "Building the project..."
     mvn clean package -DskipTests
 fi
@@ -59,8 +59,8 @@ fi
 # Run the Single-Broker CLI
 if [ -n "$COMMAND" ]; then
     echo "Running Single-Broker CLI in non-interactive mode with command: $COMMAND"
-    java -cp "target/kafka-management-library-1.0.1.jar:target/lib/*" com.mycompany.kafka.cli.KafkaCLI "$BOOTSTRAP_SERVERS" "$SCHEMA_REGISTRY_URL" "$COMMAND"
+    java -cp "target/kafka-management-library-1.0.2.jar:target/lib/*" com.mycompany.kafka.cli.KafkaCLI "$BOOTSTRAP_SERVERS" "$SCHEMA_REGISTRY_URL" "$COMMAND"
 else
     echo "Running Single-Broker CLI in interactive mode"
-    java -cp "target/kafka-management-library-1.0.1.jar:target/lib/*" com.mycompany.kafka.cli.KafkaCLI "$BOOTSTRAP_SERVERS" "$SCHEMA_REGISTRY_URL"
+    java -cp "target/kafka-management-library-1.0.2.jar:target/lib/*" com.mycompany.kafka.cli.KafkaCLI "$BOOTSTRAP_SERVERS" "$SCHEMA_REGISTRY_URL"
 fi

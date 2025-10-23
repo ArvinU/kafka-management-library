@@ -90,7 +90,7 @@ Add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>com.mycompany</groupId>
     <artifactId>kafka-management-library</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -1061,7 +1061,7 @@ The library is published to Maven Central and can be used in your projects by ad
 <dependency>
     <groupId>io.github.arvinu</groupId>
     <artifactId>kafka-management-library</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -1070,7 +1070,7 @@ The library is published to Maven Central and can be used in your projects by ad
 For Gradle projects, add to your `build.gradle`:
 
 ```gradle
-implementation 'io.github.arvinu:kafka-management-library:1.0.1'
+implementation 'io.github.arvinu:kafka-management-library:1.0.2'
 ```
 
 ### Maven Central Publishing

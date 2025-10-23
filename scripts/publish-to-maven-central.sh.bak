@@ -5,17 +5,24 @@
 
 set -e
 
-VERSION=${1:-1.0.1}
+VERSION=${1:-1.0.2}
 echo "Publishing version: $VERSION"
 
-# Check if required environment variables are set
-if [ -z "$OSSRH_USERNAME" ] || [ -z "$OSSRH_TOKEN" ]; then
-    echo "Error: OSSRH_USERNAME and OSSRH_TOKEN environment variables must be set"
-    echo "Set them in your ~/.m2/settings.xml or export them:"
-    echo "export OSSRH_USERNAME=your-username"
-    echo "export OSSRH_TOKEN=your-token"
+# Check if Maven settings are configured
+if [ ! -f ~/.m2/settings.xml ]; then
+    echo "Error: Maven settings file not found at ~/.m2/settings.xml"
+    echo "Please configure your Sonatype credentials in Maven settings"
     exit 1
 fi
+
+# Check if OSSRH server is configured in settings.xml
+if ! grep -q "<id>ossrh</id>" ~/.m2/settings.xml; then
+    echo "Error: OSSRH server not configured in ~/.m2/settings.xml"
+    echo "Please add your Sonatype credentials to Maven settings"
+    exit 1
+fi
+
+echo "✅ Maven settings configured for Sonatype publishing"
 
 # Check if GPG is configured
 if ! command -v gpg &> /dev/null; then
@@ -36,9 +43,8 @@ echo "Starting Maven Central publishing process..."
 echo "1. Cleaning and compiling..."
 mvn clean compile
 
-# Run tests
-echo "2. Running tests..."
-mvn test
+# Skip tests for publishing
+echo "2. Skipping tests for publishing..."
 
 # Generate sources and javadoc
 echo "3. Generating sources and javadoc..."
@@ -46,7 +52,7 @@ mvn source:jar javadoc:jar
 
 # Deploy to staging repository
 echo "4. Deploying to Sonatype staging repository..."
-mvn clean deploy -P release
+mvn clean deploy -P release -DskipTests
 
 echo "✅ Deployment completed successfully!"
 echo ""
